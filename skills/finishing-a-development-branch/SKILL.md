@@ -52,14 +52,15 @@ Confirm before merging: merging into the wrong base is expensive to undo.
 
 ## Step 4: Present Options
 
-**Normal repo and named-branch worktree — present exactly these 3 options:**
+**Normal repo and named-branch worktree — present exactly these 4 options:**
 
 ```
 Implementation complete. What would you like to do?
 
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
+1. Ship it: commit, push, create PR, merge, and clean up (default)
+2. Merge back to <base-branch> locally
+3. Push and create a Pull Request
+4. Keep the branch as-is (I'll handle it later)
 
 Which option?
 ```
@@ -83,7 +84,40 @@ is theirs.
 
 ## Step 5: Execute Choice
 
-### Option 1: Merge Locally
+### Option 1 (default): Ship it
+
+Commit any uncommitted changes, push the branch, create a PR, merge it with a
+merge commit, then clean up the branch and worktree and sync `main`.
+
+```bash
+# 1. Commit (if anything is uncommitted)
+if [ -n "$(git status --porcelain)" ]; then
+  git add -A
+  git commit -m "<generated from diff summary>"
+fi
+
+# 2. Push + PR
+git push -u origin <feature-branch>
+PR_URL=$(gh pr create --base <base-branch> --head <feature-branch> --title "<title>" --body "<body>")
+
+# 3. Merge (merge commit)
+gh pr merge "$PR_URL" --merge
+
+# 4. Sync main + prune
+MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+cd "$MAIN_ROOT"
+git checkout <base-branch>
+git pull
+git fetch --prune
+git branch -d <feature-branch> 2>/dev/null || true
+
+# 5. Worktree cleanup (Step 6)
+```
+
+Stop and report if any step fails (tests, push rejection, merge conflict, or
+CI failure). Do not force-push or auto-resolve conflicts.
+
+### Option 2: Merge Locally
 
 ```bash
 # Get main repo root for CWD safety
@@ -110,7 +144,7 @@ delete the branch:
 git branch -d <feature-branch>
 ```
 
-### Option 2: Push and Create PR
+### Option 3: Push and Create PR
 
 ```bash
 git push -u origin <feature-branch>
@@ -125,7 +159,7 @@ present, and report the URL to your human partner.
 
 Keep the worktree — your human partner iterates on PR feedback there.
 
-### Option 3: Keep As-Is
+### Option 4: Keep As-Is
 
 Report: "Keeping branch <name>. Worktree preserved at <path>."
 
