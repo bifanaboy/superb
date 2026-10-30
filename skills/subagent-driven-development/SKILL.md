@@ -160,6 +160,22 @@ the implementer that got stuck.
 omitted model inherits your session's model — often the most capable and
 most expensive — which silently defeats this section.
 
+**Model discovery.** Get the available models by calling
+`tools.opencode.models` (all providers, no provider filter). You may pick
+any model whose ID carries a `:free` tag; the tier guidance above is a
+preference, not a restriction, so a free model in any tier is acceptable.
+Map each available model to a tier from its advertised capability and cost
+when choosing among free options. If no `:free` model is available, stop
+and ask your human partner.
+
+**Model errors and rotation.** If a dispatch fails on a model error
+(rate limit, timeout, unavailable, etc.), rotate to a different `:free`
+model and retry once, recording `Ruling: model rotation <from> -> <to> -
+<reason> - <cost if wrong>`. If the error says your allowance is
+exhausted, rotate the *provider* (re-run discovery without a provider
+filter) and retry once. Count the initial attempt plus up to two
+rotations (three total attempts); after that, stop and ask your human
+partner. Record the initial model choice in the ledger.
 **Turn count beats token price.** Wall-clock and context cost scale with how
 many turns a subagent takes, and the cheapest models routinely take 2-3× the
 turns on multi-step work — costing more overall. Use a mid-tier model as the
