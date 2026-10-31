@@ -11,6 +11,7 @@ Superpowers is a personal OpenCode 2 build of the Superpowers workflow: a set of
 - **Subagent execution** with fast and smart model roles, or native execution in one session.
 - **Test-driven development** on every task.
 - **Code review** before the work is merged.
+- **UI breaker and design.** The `ui-breaker` and `ui-design` skills find what is wrong in a running web UI, then fix it with a product-derived direction.
 - **A finish menu** that asks before it pushes, opens a pull request, or merges.
 - **Autonomous mode** that runs the workflow after you approve the design.
 

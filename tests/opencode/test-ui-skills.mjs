@@ -51,6 +51,13 @@ for (const ref of ['taste-bar.md', 'direction-method.md', 'registers.md']) {
   check(fs.existsSync(path.join(root, 'skills/ui-design/references', ref)), `missing ui-design reference ${ref}`);
 }
 
+const readme = read('README.md');
+check(readme.includes('ui-breaker') && readme.includes('ui-design'), 'README must name ui-breaker and ui-design');
+const using = read('skills/using-superpowers/SKILL.md');
+check(using.includes('ui-design'), 'using-superpowers must name ui-design');
+check(skill('ui-breaker').includes('../ui-design/references/taste-bar.md'), 'ui-breaker must link to the taste bar');
+check(skill('ui-design').includes('../ui-breaker/references/browser-protocol.md'), 'ui-design must link to the browser protocol');
+
 if (failures.length) {
   for (const failure of failures) console.error(`FAIL: ${failure}`);
   process.exit(1);
