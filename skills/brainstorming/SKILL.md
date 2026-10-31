@@ -30,7 +30,7 @@ Before you start implementing, you must, in order:
 2. Grill the chosen design until the frontier is empty and they confirm the playback.
 3. Write the design doc, short or full (see Size the Work).
 4. Get their approval of that doc.
-5. Invoke the superpowers:writing-plans skill.
+5. After approval, follow the `## Handoff` section.
 
 Two things aren't implementing: a spike they said yes to (see Spike to
 feel things out), and doing what they asked once they've opted out of
