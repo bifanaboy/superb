@@ -68,7 +68,12 @@ only for the six slots, in the same order every time.
 
 ## Warnings
 
-- If two slots hold the same model, say so. The chain then repeats one
-  failure three times.
-- If a saved model is absent from `tools.opencode.models({})`, say so and
+Run these two checks after the sixth answer. Say each finding once, in one
+short block. Never repeat the same warning in the same session.
+
+- Two slots hold the same model. A duplicate wastes an attempt when both
+  slots sit in the same role. If all three slots in one role hold the same
+  model, all three attempts hit it. This is your choice, not an error:
+  report it here only, and do not repeat it in the task summary.
+- A saved model is absent from `tools.opencode.models({})`. Say it, and
   offer a replacement.
