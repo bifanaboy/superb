@@ -1,7 +1,8 @@
 # Builder Check Prompt
 
 Dispatch a fresh general-purpose subagent with this prompt once the
-written design exists. Fill in the domain and the document path.
+written design exists. Fill in the domain and the document path. Use the
+description `Smart agent — Builder check: [DOMAIN]`.
 
 ```
 You are a talented [DOMAIN, e.g. "software engineer", "event planner",

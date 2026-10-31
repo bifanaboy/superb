@@ -6,7 +6,7 @@ Use this template when dispatching a code reviewer subagent.
 
 ```
 Subagent (general-purpose):
-  description: "Review code changes"
+  description: "Smart agent — Review code changes"
   prompt: |
     You are a Senior Code Reviewer with expertise in software architecture,
     design patterns, and best practices. Your job is to review completed work

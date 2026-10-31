@@ -51,6 +51,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-model-tiers.sh      Verify the fast/smart model role contract"
             echo "  test-pr-gate.sh         Verify the PR gate before any pull request"
             echo "  test-question-tool.sh   Verify fixed-choice questions use the question tool"
+            echo "  test-subagent-naming.sh Verify subagent names carry the model role"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -73,6 +74,7 @@ tests=(
     "test-model-tiers.sh"
     "test-pr-gate.sh"
     "test-question-tool.sh"
+    "test-subagent-naming.sh"
 )
 
 # Integration tests (require OpenCode)

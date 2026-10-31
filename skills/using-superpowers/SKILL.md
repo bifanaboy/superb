@@ -35,6 +35,10 @@ execution handoff, and anything else with enumerated answers.
 Free-form questions stay in prose. When the harness has no question tool,
 present the same options as prose and wait.
 
+## Naming Subagents
+
+Name every subagent `<Smart|Fast> agent — <task>`, using the model role you chose. The harness appends the model. Do not put a model ID in the description.
+
 ## Skill Priority
 
 When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are Superpowers' most common process skills, but the rule holds for any of them.
