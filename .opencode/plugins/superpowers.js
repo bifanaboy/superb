@@ -149,6 +149,50 @@ const _cacheChildSession = (sessionID, isChild) => {
   _childSessionCache.set(sessionID, isChild);
 };
 
+// --- Todo staleness tracking ------------------------------------------------
+//
+// The todo tool is easy to create and easy to forget. After the first
+// todowrite in a session, count tool calls since the last one. A soft system
+// line appears at the nudge threshold; a permission deny at the block
+// threshold stops file mutations and shell commands until the model updates
+// the list. The soft line exists only for the model call that carries it, so
+// it never grows the persisted history.
+const TODO_NUDGE_AFTER = 5;
+const TODO_BLOCK_AFTER = 8;
+// write and patch usually report the `edit` action, but some host versions
+// report the tool name. Cover both so the gate cannot be skipped.
+const TODO_BLOCK_ACTIONS = new Set(['edit', 'write', 'patch', 'shell']);
+const _todoState = new Map(); // sessionID -> { seen, callsSince, items }
+
+const _todoStateFor = (sessionID) => {
+  const cached = _todoState.get(sessionID);
+  if (cached) return cached;
+  if (_todoState.size >= CHILD_SESSION_CACHE_MAX) {
+    let toDrop = Math.ceil(CHILD_SESSION_CACHE_MAX / 4);
+    for (const key of _todoState.keys()) {
+      if (toDrop-- <= 0) break;
+      _todoState.delete(key);
+    }
+  }
+  const state = { seen: false, callsSince: 0, items: [] };
+  _todoState.set(sessionID, state);
+  return state;
+};
+
+const _todoProgress = (state) => {
+  const active = state.items.find((item) => item && item.status === 'in_progress');
+  return active ? `"${active.content}" is still in_progress` : 'no item is in_progress';
+};
+
+const _todoNudge = (state) =>
+  `TODO CHECK: ${state.callsSince} tool calls since the last \`todowrite\`; ${_todoProgress(state)}. Mark finished items complete and set the next item to in_progress.`;
+
+const _todoBlock = (state) =>
+  `TODO BLOCK: ${state.callsSince} tool calls since the last \`todowrite\`; ${_todoProgress(state)}. Run \`todowrite\` now: mark finished items complete, set the next item to in_progress, then retry this action.`;
+
+const _positiveInt = (value, fallback) =>
+  Number.isInteger(value) && value > 0 ? value : fallback;
+
 const isChildSession = async (fetchSession, sessionID) => {
   if (!sessionID) return false; // unknown session: keep current behavior
   if (_childSessionCache.has(sessionID)) return _childSessionCache.get(sessionID);
@@ -239,23 +283,85 @@ async function setup(ctx) {
     console.error('[superpowers] skill registration failed:', err);
   }
 
-  // 2. Inject bootstrap into first user message via V2 session context hook
-  try {
-    await ctx.session.hook('context', async (event) => {
-      try {
-        const bootstrap = getBootstrapContent();
-        if (!bootstrap || !event.messages || !event.messages.length) return;
-        const firstUser = event.messages.find(m => m.role === 'user');
-        if (firstUser && (!firstUser.content || !firstUser.content.length)) return;
-        if (firstUser?.content.some(p => p.type === 'text' && p.text && p.text.includes('EXTREMELY_IMPORTANT'))) return;
+  const nudgeAfter = _positiveInt(ctx?.options?.todoNudgeAfter, TODO_NUDGE_AFTER);
+  const blockAfter = Math.max(
+    _positiveInt(ctx?.options?.todoBlockAfter, TODO_BLOCK_AFTER),
+    nudgeAfter,
+  );
 
-        // #2160: the context event carries the sessionID directly. Skip the
-        // controller bootstrap when this prompt belongs to a task subagent
-        // (child) session. Skills registered above stay available to workers.
+  // 2. Track tool calls so the nudge and the gate can see a stale todo list
+  try {
+    await ctx.tool.hook('execute.after', (event) => {
+      try {
+        if (!event || !event.sessionID) return;
+        const state = _todoStateFor(event.sessionID);
+        if (event.tool === 'todowrite') {
+          if (event.status !== 'completed') return;
+          const todos = event.input && event.input.todos;
+          if (Array.isArray(todos)) state.items = todos;
+          state.seen = Array.isArray(todos) ? todos.length > 0 : false;
+          state.callsSince = 0;
+          return;
+        }
+        state.callsSince += 1;
+      } catch (err) {
+        console.error('[superpowers] todo tracking failed:', err);
+      }
+    });
+  } catch (err) {
+    console.error('[superpowers] todo tracking hook registration failed:', err);
+  }
+
+  // 3. Deny work actions while the todo list is stale. Reading stays open.
+  try {
+    await ctx.permission.hook('evaluate', async (event) => {
+      try {
+        if (!event || !TODO_BLOCK_ACTIONS.has(event.action)) return;
+        const state = event.sessionID ? _todoState.get(event.sessionID) : undefined;
+        if (!state || !state.seen || state.callsSince < blockAfter) return;
         if (typeof ctx.session.get === 'function' && await isChildSession(
           (id) => ctx.session.get({ sessionID: id }),
           event.sessionID,
         )) return;
+        event.effect = 'deny';
+        event.message = _todoBlock(state);
+      } catch (err) {
+        console.error('[superpowers] todo gate failed:', err);
+      }
+    });
+  } catch (err) {
+    console.error('[superpowers] todo gate hook registration failed:', err);
+  }
+
+  // 4. Inject the bootstrap into the first user message, and the todo nudge
+  //    into every model call whose list is stale.
+  try {
+    await ctx.session.hook('context', async (event) => {
+      try {
+        if (!event.messages || !event.messages.length) return;
+
+        // #2160: the context event carries the sessionID directly. A task
+        // subagent (child) session gets neither the bootstrap nor the nudge;
+        // skills registered above stay available to workers.
+        const isChild = typeof ctx.session.get === 'function' && await isChildSession(
+          (id) => ctx.session.get({ sessionID: id }),
+          event.sessionID,
+        );
+
+        const state = event.sessionID ? _todoState.get(event.sessionID) : undefined;
+        if (!isChild && state && state.seen && state.callsSince >= nudgeAfter) {
+          const text = _todoNudge(state);
+          if (Array.isArray(event.system) &&
+              !event.system.some((part) => part.type === 'text' && part.text === text)) {
+            event.system.push({ type: 'text', text });
+          }
+        }
+
+        const bootstrap = getBootstrapContent();
+        if (!bootstrap || isChild) return;
+        const firstUser = event.messages.find(m => m.role === 'user');
+        if (firstUser && (!firstUser.content || !firstUser.content.length)) return;
+        if (firstUser?.content.some(p => p.type === 'text' && p.text && p.text.includes('EXTREMELY_IMPORTANT'))) return;
 
         // Native compaction can leave only an opaque checkpoint. Keep it
         // intact and append the transient bootstrap as a user message.
