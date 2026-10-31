@@ -140,54 +140,32 @@ ledger.
 
 Use the least powerful model that can handle each role to conserve cost and increase speed.
 
-**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use the **fast** role. Most implementation tasks are mechanical when the plan is well-specified.
 
-**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use the **smart** role.
 
-**Architecture and design tasks**: use the most capable available model.
-The final whole-branch review is one of these — dispatch it on the most
-capable available model, not the session default.
+**Architecture and design tasks**: use the **smart** role.
+The final whole-branch review is one of these — dispatch it on the smart chain.
 
-**Review tasks**: choose the model with the same judgment, scaled to the
-diff's size, complexity, and risk. A small mechanical diff does not need the
-most capable model; a subtle concurrency change does. Scoped re-reviews of
-small fix diffs take a cheap-to-mid tier.
+**Review tasks**: every review uses the **smart** role. Start that role at
+`paid` like every other dispatch, and let the chain fall back.
 
-**Fix-loop escalation (rounds 4-5)**: use a model at least one tier above
-the implementer that got stuck.
+**Fix-loop escalation (rounds 4-5)**: use the smart chain. There is no role above smart.
 
-**Always specify the model explicitly when dispatching a subagent.** An
-omitted model inherits your session's model — often the most capable and
-most expensive — which silently defeats this section.
+**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({})`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. At the end of the task, list config problems in one summary block and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. This rule is for you, the root agent: workers never dispatch subagents.
 
-**Model discovery.** Get the available models by calling
-`tools.opencode.models` (all providers, no provider filter). You may pick
-any model whose ID carries a `:free` tag; the tier guidance above is a
-preference, not a restriction, so a free model in any tier is acceptable.
-Map each available model to a tier from its advertised capability and cost
-when choosing among free options. If no `:free` model is available, stop
-and ask your human partner.
-
-**Model errors and rotation.** If a dispatch fails on a model error
-(rate limit, timeout, unavailable, etc.), rotate to a different `:free`
-model and retry once, recording `Ruling: model rotation <from> -> <to> -
-<reason> - <cost if wrong>`. If the error says your allowance is
-exhausted, rotate the *provider* (re-run discovery without a provider
-filter) and retry once. Count the initial attempt plus up to two
-rotations (three total attempts); after that, stop and ask your human
-partner. Record the initial model choice in the ledger.
 **Turn count beats token price.** Wall-clock and context cost scale with how
 many turns a subagent takes, and the cheapest models routinely take 2-3× the
 turns on multi-step work — costing more overall. Use a mid-tier model as the
 floor for reviewers and for implementers working from prose descriptions.
 When the task's plan text contains the complete code to write, the
-implementation is transcription plus testing: use the cheapest tier for
-that implementer. Single-file mechanical fixes also take the cheapest tier.
+implementation is transcription plus testing: use the **fast** role for
+that implementer. Single-file mechanical fixes also take the **fast** role.
 
 **Task complexity signals (implementation tasks):**
-- Touches 1-2 files with a complete spec → cheap model
-- Touches multiple files with integration concerns → standard model
-- Requires design judgment or broad codebase understanding → most capable model
+- Touches 1-2 files with a complete spec → **fast** role
+- Touches multiple files with integration concerns → **smart** role
+- Requires design judgment or broad codebase understanding → **smart** role
 
 ## The Task Loop
 

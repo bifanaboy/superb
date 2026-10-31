@@ -47,6 +47,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-bootstrap-caching.sh  Verify bootstrap content caching"
             echo "  test-session-bootstrap.sh  Verify session classification and lookup recovery"
             echo "  test-skill-registration.sh  Verify V2 skill registration contract (2.0.4 path field)"
+            echo "  test-model-tiers.sh      Verify the fast/smart model role contract"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -65,6 +66,7 @@ tests=(
     "test-bootstrap-caching.sh"
     "test-session-bootstrap.sh"
     "test-skill-registration.sh"
+    "test-model-tiers.sh"
 )
 
 # Integration tests (require OpenCode)
