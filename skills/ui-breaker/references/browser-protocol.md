@@ -96,7 +96,7 @@ retry a test you already ran.
 ## Evidence
 
 - `screenshot` on every failure. Save it under
-  `.superpowers/ui-breaker/<run>/`.
+  `.superb/ui-breaker/<run>/`.
 - `console` for uncaught errors and failed requests.
 - `network` for failed requests and unexpected writes.
 - `lighthouse` for accessibility and performance. If it is unavailable, use

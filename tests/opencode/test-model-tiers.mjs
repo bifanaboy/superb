@@ -6,16 +6,16 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(here, '../..');
 const skills = path.join(repo, 'skills');
 
-const CONFIG_PATH = '~/.config/opencode/superpowers/models.json';
-const MENTION = '@choosing-superpowers-models';
-const SETUP_SKILL = 'choosing-superpowers-models';
+const CONFIG_PATH = '~/.config/opencode/superb/models.json';
+const MENTION = '@choosing-superb-models';
+const SETUP_SKILL = 'choosing-superb-models';
 const DISPATCH_SKILLS = [
   'subagent-driven-development',
   'executing-plans',
   'requesting-code-review',
   'brainstorming',
   'dispatching-parallel-agents',
-  'diagnosing-superpowers',
+  'diagnosing-superb',
 ];
 const SLOT_KEYS = [
   'fast.costly', 'fast.cheap', 'fast.free',
@@ -72,7 +72,7 @@ if (setup) {
   check('setup skill warns the change applies next session', /next session/i.test(setup));
   check('setup skill documents the mention', setup.includes(MENTION));
   check('setup skill creates the config directory when missing',
-    /create[^.\n]*`?~\/\.config\/opencode\/superpowers\/`?[^.\n]*missing/i.test(setup));
+    /create[^.\n]*`?~\/\.config\/opencode\/superb\/`?[^.\n]*missing/i.test(setup));
   check('setup skill preserves a variant suffix', setup.includes('#variant'));
   check('setup skill warns about duplicate models',
     /two slots hold the same model/i.test(setup));

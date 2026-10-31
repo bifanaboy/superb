@@ -39,7 +39,7 @@ for (const outcome of ['confirmed', 'plausible', 'falsified', 'inconclusive']) {
   check(`reference names ${outcome}`, flat.toLowerCase().includes(outcome));
 }
 check('reference points to dispatching-parallel-agents',
-  flat.includes('superpowers:dispatching-parallel-agents'));
+  flat.includes('superb:dispatching-parallel-agents'));
 check('reference does not name platform tools',
   !/Sentry|DataDog|Jaeger/.test(flat));
 check('reference blocks fixes before confirmation',

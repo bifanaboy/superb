@@ -41,7 +41,7 @@ const mappingFailures = assertMappingConstants(mod);
 
 // Drive setup() once and fire the captured "context" hook on two top-level
 // (parentID-less) sessions. Counting starts after setup(): skill registration
-// also reads using-superpowers/SKILL.md.
+// also reads using-superb/SKILL.md.
 const invoke = await makeContextHarness(mod);
 const baseline = { existsCount, readCount };
 
@@ -88,7 +88,7 @@ if (failures.length > 0) {
 console.log(JSON.stringify(result, null, 2));
 
 function isBootstrapSkillPath(filePath) {
-  return String(filePath).replaceAll('\\', '/').includes('using-superpowers/SKILL.md');
+  return String(filePath).replaceAll('\\', '/').includes('using-superb/SKILL.md');
 }
 
 async function makeContextHarness(mod) {

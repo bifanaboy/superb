@@ -19,9 +19,9 @@ check('has a Handoff section', text.includes('## Handoff'));
 check('uses the question tool', flat.includes('question tool'));
 check('offers implement now', flat.includes('Implement now'));
 check('offers file the spec as an issue', flat.includes('File the spec as an issue'));
-check('implement invokes writing-plans', flat.includes('superpowers:writing-plans'));
+check('implement invokes writing-plans', flat.includes('superb:writing-plans'));
 check('no unconditional writing-plans step remains',
-  !/5\. Invoke the superpowers:writing-plans skill\./.test(flat));
+  !/5\. Invoke the superb:writing-plans skill\./.test(flat));
 check('file path writes the origin issue', flat.includes('origin issue'));
 check('file path creates a new issue', flat.includes('create a new issue'));
 check('file path replaces the issue body', flat.includes('Replace the issue body'));

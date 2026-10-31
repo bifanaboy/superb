@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SessionStart hook for superpowers plugin
+# SessionStart hook for superb plugin
 
 set -euo pipefail
 
@@ -15,13 +15,13 @@ case "$0" in
 esac
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-# Read using-superpowers content via bash's builtin $(< file) instead of
+# Read using-superb content via bash's builtin $(< file) instead of
 # cat, for the same PATH-independence reason.
-skill_md="${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md"
+skill_md="${PLUGIN_ROOT}/skills/using-superb/SKILL.md"
 if [ -r "$skill_md" ]; then
-  using_superpowers_content="$(<"$skill_md")"
+  using_superb_content="$(<"$skill_md")"
 else
-  using_superpowers_content="Error reading using-superpowers skill"
+  using_superb_content="Error reading using-superb skill"
 fi
 
 # Escape string for JSON embedding using bash parameter substitution.
@@ -37,8 +37,8 @@ escape_for_json() {
     printf '%s' "$s"
 }
 
-using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
-session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'superpowers:using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superpowers_escaped}\n</EXTREMELY_IMPORTANT>"
+using_superb_escaped=$(escape_for_json "$using_superb_content")
+session_context="<EXTREMELY_IMPORTANT>\nYou have Superb.\n\n**Below is the full content of your 'superb:using-superb' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superb_escaped}\n</EXTREMELY_IMPORTANT>"
 
 # Output context injection as JSON.
 # Cursor hooks expect additional_context (snake_case).
@@ -49,7 +49,7 @@ session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the 
 # Muse sets MUSE_PLUGIN_ROOT and expects additionalContext (SDK standard).
 #
 # Uses printf instead of heredoc to work around bash 5.3+ heredoc hang.
-# See: https://github.com/obra/superpowers/issues/571
+# See upstream issue #571 about the bash 5.3 heredoc hang.
 #
 # emit_json pipes printf through `cat` when cat is on PATH, to absorb EPIPE
 # on Windows. On Windows + Git Bash, the harness can close the hook's stdout

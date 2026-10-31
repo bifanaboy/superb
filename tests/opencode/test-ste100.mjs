@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(here, '../..');
-const file = path.join(repo, 'skills/using-superpowers/SKILL.md');
+const file = path.join(repo, 'skills/using-superb/SKILL.md');
 const text = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
 
 const failures = [];
@@ -17,7 +17,7 @@ const check = (name, ok, detail = '') => {
   }
 };
 
-check('using-superpowers exists', text.length > 0);
+check('using-superb exists', text.length > 0);
 check('has the Writing to Your Human Partner section',
   text.includes('## Writing to Your Human Partner'));
 check('names ASD-STE100', text.includes('ASD-STE100'));
