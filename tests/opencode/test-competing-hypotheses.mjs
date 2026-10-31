@@ -23,6 +23,9 @@ check('systematic-debugging skill exists', skill !== null);
 check('reference exists', ref !== null);
 check('Phase 1 links the reference', (skill ?? '').includes('competing-hypotheses.md'));
 
+const supporting = (skill ?? '').split('## Supporting Techniques')[1] ?? '';
+check('Supporting Techniques lists the reference', supporting.includes('competing-hypotheses.md'));
+
 for (const topic of ['logic', 'data', 'state', 'integration', 'resource', 'environment']) {
   check(`reference names ${topic}`, flat.toLowerCase().includes(topic));
 }
