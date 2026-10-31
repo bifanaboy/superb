@@ -94,6 +94,18 @@ npm test 2>&1 | grep 'DEBUG git init'
 - Find the line number triggering the call
 - Identify the pattern (same test? same parameter?)
 
+## Where to Instrument
+
+Log at the places where a wrong value becomes visible. Five sites cover most bugs:
+
+1. **Entry points** — where the affected behavior starts. Log the input and the caller.
+2. **Decision nodes** — every branch where behavior can diverge. Log the values that pick the branch.
+3. **State mutations** — where shared or persistent state changes. Log the old value and the new value.
+4. **External call boundaries** — database, network, filesystem, subprocess. Log the request and the result.
+5. **Error handling paths** — where an error is caught, wrapped, or swallowed. Log the original error before you transform it.
+
+Add logs before the dangerous operation, not after it fails. Log the values that decide the outcome, not a status message.
+
 ## Finding Which Test Causes Pollution
 
 If something appears during tests but you don't know which test:

@@ -56,6 +56,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-dead-models.sh     Verify a failed model is skipped for the session"
             echo "  test-handoff-choice.sh  Verify the brainstorming handoff choice"
             echo "  test-competing-hypotheses.sh  Verify the competing-hypotheses reference"
+            echo "  test-observability-evidence.sh  Verify the observability-evidence reference"
             echo "  test-dispatch-write-surface.sh  Verify the parallel-dispatch write-surface contract"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
@@ -84,6 +85,7 @@ tests=(
     "test-dead-models.sh"
     "test-handoff-choice.sh"
     "test-competing-hypotheses.sh"
+    "test-observability-evidence.sh"
     "test-dispatch-write-surface.sh"
 )
 
