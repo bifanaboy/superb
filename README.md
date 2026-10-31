@@ -16,9 +16,11 @@ Skills live in `skills/`. Bootstrap is `.opencode/plugins/superpowers.js`.
 
 Superpowers gives every subagent a role: **fast** for transcription, or a
 **smart** role for judgment work. Each role has a paid, a cheap, and a free
-model. Set them once by saying "let's set up my superpowers models". The
-config lives at `~/.config/opencode/superpowers/models.json`. If a model
-fails, the next slot is tried. You only hear about it when all three fail.
+model. Set them once with `@choosing-superpowers-models`, or by asking in
+plain words. The config lives at
+`~/.config/opencode/superpowers/models.json`. If a model fails, the next
+slot is tried without a message. Config problems and total failure appear
+in the summary at the end of the task.
 
 See `docs/superpowers/specs/2026-10-31-superpowers-model-tiers-design.md`.
 

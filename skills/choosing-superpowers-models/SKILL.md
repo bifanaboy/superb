@@ -1,11 +1,14 @@
 ---
-name: superpowers-models
-description: Use when the user wants to set up, change, or review the Superpowers model roles (fast and smart), for example "let's set up my superpowers models".
+name: choosing-superpowers-models
+description: Use when the user wants to set up, change, or review the Superpowers model roles (fast and smart) — any phrasing such as "set up my superpowers models", or the @choosing-superpowers-models mention.
 ---
 
 # Superpowers Model Roles
 
 Set the six models that Superpowers uses for subagents.
+
+Invoke this skill by any reasonable phrasing, or mention
+`@choosing-superpowers-models`.
 
 ## What this sets
 

@@ -8,9 +8,9 @@ The root agent picks a role for each subagent and tries three models in order fo
 
 - One global config file holds six model IDs: paid, cheap, and free for each of two roles.
 - A setup skill asks six questions and writes the file.
-- Four skills that dispatch subagents read the file and use the paid, cheap, free chain.
+- Every skill that dispatches a subagent reads the file and uses the paid, cheap, free chain.
 - Failures fall back silently. Only total failure reaches the user.
-- Works with no plugin change, no new slash command, and no `@` mention.
+- Works with no plugin change and no new slash command. The setup skill is reachable by plain language or by the `@choosing-superpowers-models` mention.
 
 ## Non-goals
 
@@ -52,9 +52,9 @@ Path: `~/.config/opencode/superpowers/models.json`
 - A missing, unreadable, or malformed file counts as no config.
 - The file applies to every project on the machine.
 
-### Setup skill: `skills/superpowers-models/SKILL.md`
+### Setup skill: `skills/choosing-superpowers-models/SKILL.md`
 
-Triggered by plain language, for example "let's set up my superpowers models". No command and no mention.
+Reachable by plain language, for example "set up my superpowers models", or by the `@choosing-superpowers-models` mention. No slash command. The mention key is the directory name.
 
 1. Read the current file if it exists.
 2. Get the model list from `tools.opencode.models({})` with no provider filter. This is the only source.
@@ -64,17 +64,18 @@ Triggered by plain language, for example "let's set up my superpowers models". N
 
 ### Dispatch rule
 
-Added to `subagent-driven-development`, `executing-plans`, `brainstorming` (builder check), and `requesting-code-review`.
+Added to every skill that dispatches a subagent: `subagent-driven-development`, `executing-plans`, `brainstorming` (builder check), `requesting-code-review`, `dispatching-parallel-agents`, and `diagnosing-superpowers`.
 
 - Read the config once per session.
 - Pick the role. **Fast** = transcription, or 1-2 files with a clear spec. **Smart** = everything else, including every review, architecture, and debugging.
 - Try `paid`, then `cheap`, then `free` for that role. Three attempts at most.
-- Skip a slot that is empty, or whose model is absent from `tools.opencode.models({})`.
-- If all three attempts fail, stop and ask the human partner.
+- Always start the role at `paid`. Task guidance selects the role only.
+- Skip a slot that is empty or absent, or whose model is absent from `tools.opencode.models({})`.
+- If no usable slot remains, or all three attempts fail, stop and ask the human partner.
 - If the config is missing or broken, dispatch with the root agent's own model ID, passed explicitly.
 - Ledger: one line per dispatch with the model, role, and slot. A ruling line for each fallback.
-- End of task: one summary block that lists every config problem found and names the setup phrase.
-- Fix-loop rounds 4-5 use the smart chain. There is no tier above smart.
+- End of task: one summary block that lists every config problem found and names `@choosing-superpowers-models`.
+- Fix-loop rounds 4-5 use the smart chain. There is no tier above smart, so escalation is a fresh smart-chain dispatch, never a higher tier.
 
 ### Nesting note
 

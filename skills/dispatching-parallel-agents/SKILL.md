@@ -63,6 +63,8 @@ Each agent gets:
 - **Constraints:** Don't change other code
 - **Expected output:** Summary of what you found and fixed
 
+**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({})`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. At the end of the task, list config problems in one summary block and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. This rule is for you, the root agent: workers never dispatch subagents.
+
 ### 3. Dispatch in Parallel
 
 Issue all three subagent dispatches in the same response — they run in parallel:

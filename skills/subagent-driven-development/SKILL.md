@@ -147,22 +147,20 @@ Use the least powerful model that can handle each role to conserve cost and incr
 **Architecture and design tasks**: use the **smart** role.
 The final whole-branch review is one of these — dispatch it on the smart chain.
 
-**Review tasks**: every review uses the **smart** role. Choose the slot by
-the diff's size, complexity, and risk: a small mechanical diff may start at
-`cheap`, and a subtle concurrency change starts at `paid`. Scoped re-reviews
-of small fix diffs take the `cheap` slot.
+**Review tasks**: every review uses the **smart** role. Start that role at
+`paid` like every other dispatch, and let the chain fall back.
 
 **Fix-loop escalation (rounds 4-5)**: use the smart chain. There is no role above smart.
 
-**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — three attempts at most. Skip an empty slot, or a model absent from `tools.opencode.models({})`. If all three fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. At the end of the task, list config problems in one summary block and name "let's set up my superpowers models". Fix-loop rounds 4-5 use the smart chain; there is no role above smart. This rule is for you, the root agent: workers never dispatch subagents.
+**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({})`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. At the end of the task, list config problems in one summary block and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. This rule is for you, the root agent: workers never dispatch subagents.
 
 **Turn count beats token price.** Wall-clock and context cost scale with how
 many turns a subagent takes, and the cheapest models routinely take 2-3× the
 turns on multi-step work — costing more overall. Use a mid-tier model as the
 floor for reviewers and for implementers working from prose descriptions.
 When the task's plan text contains the complete code to write, the
-implementation is transcription plus testing: use the cheapest tier for
-that implementer. Single-file mechanical fixes also take the cheapest tier.
+implementation is transcription plus testing: use the **fast** role for
+that implementer. Single-file mechanical fixes also take the **fast** role.
 
 **Task complexity signals (implementation tasks):**
 - Touches 1-2 files with a complete spec → **fast** role
