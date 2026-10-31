@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Test: model role contract (fast/smart, paid/cheap/free)
+# Test: model role contract (fast/smart, costly/cheap/free)
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

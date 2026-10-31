@@ -18,8 +18,8 @@ const DISPATCH_SKILLS = [
   'diagnosing-superpowers',
 ];
 const SLOT_KEYS = [
-  'fast.paid', 'fast.cheap', 'fast.free',
-  'smart.paid', 'smart.cheap', 'smart.free',
+  'fast.costly', 'fast.cheap', 'fast.free',
+  'smart.costly', 'smart.cheap', 'smart.free',
 ];
 const BLOCK_ANCHOR = '**Model roles:**';
 
@@ -97,7 +97,7 @@ for (const id of DISPATCH_SKILLS) {
   const block = modelBlock(text);
   check(`${id} carries the model roles block`, block !== null);
   check(`${id} names the config path`, text.includes(CONFIG_PATH));
-  check(`${id} names the chain order`, /`paid`, then `cheap`, then `free`/.test(text));
+  check(`${id} names the chain order`, /`costly`, then `cheap`, then `free`/.test(text));
   check(`${id} names the setup mention`, text.includes(MENTION));
   check(`${id} skips empty or absent slots`, /empty or absent slot/.test(text));
   check(`${id} defines exhaustion when no slot remains`, /no usable slot remains/.test(text));

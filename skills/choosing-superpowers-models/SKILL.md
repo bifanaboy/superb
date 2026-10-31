@@ -16,10 +16,10 @@ Two roles. Each role has three slots.
 
 | Slot key | Use |
 |---|---|
-| `fast.paid` | First try for fast work |
+| `fast.costly` | First try for fast work |
 | `fast.cheap` | Second try for fast work |
 | `fast.free` | Third try for fast work |
-| `smart.paid` | First try for smart work |
+| `smart.costly` | First try for smart work |
 | `smart.cheap` | Second try for smart work |
 | `smart.free` | Third try for smart work |
 
@@ -34,8 +34,8 @@ Path: `~/.config/opencode/superpowers/models.json`
 
 ```json
 {
-  "fast": { "paid": "provider/model", "cheap": "provider/model", "free": "provider/model" },
-  "smart": { "paid": "provider/model", "cheap": "provider/model", "free": "provider/model" }
+  "fast": { "costly": "provider/model", "cheap": "provider/model", "free": "provider/model" },
+  "smart": { "costly": "provider/model", "cheap": "provider/model", "free": "provider/model" }
 }
 ```
 
@@ -55,7 +55,7 @@ Rules:
 
 ## The six questions
 
-Ask in this order: `fast.paid`, `fast.cheap`, `fast.free`, `smart.paid`,
+Ask in this order: `fast.costly`, `fast.cheap`, `fast.free`, `smart.costly`,
 `smart.cheap`, `smart.free`.
 
 For each question:
