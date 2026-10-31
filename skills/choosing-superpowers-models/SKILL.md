@@ -46,7 +46,7 @@ Rules:
 ## Steps
 
 1. Read the config file if it exists. If it is broken, say so and start fresh.
-2. Call `tools.opencode.models({})` with no provider filter. This is the only source of selectable models.
+2. Call `tools.opencode.models({ all: true })` with no provider filter. This is the only source of selectable models. The default listing hides older versions behind the newest of each family, so a model missing from it is not missing from the provider.
 3. Ask the six questions below, one at a time, in order.
 4. Write the file. Create `~/.config/opencode/superpowers/` when it is missing.
 5. Tell the user the change applies next session, because the dispatch skills read the config once per session.
@@ -75,5 +75,5 @@ short block. Never repeat the same warning in the same session.
   slots sit in the same role. If all three slots in one role hold the same
   model, all three attempts hit it. This is your choice, not an error:
   report it here only, and do not repeat it in the task summary.
-- A saved model is absent from `tools.opencode.models({})`. Say it, and
-  offer a replacement.
+- A saved model is absent from `tools.opencode.models({ all: true })`. Say it,
+  and offer a replacement.
