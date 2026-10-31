@@ -117,6 +117,9 @@ You MUST complete each phase before proceeding to the next.
    - Keep tracing up until you find the source
    - Fix at source, not at symptom
 
+**When more than one cause is plausible:** read
+`competing-hypotheses.md` in this directory.
+
 ### Phase 2: Pattern Analysis
 
 **Find the pattern before fixing:**
