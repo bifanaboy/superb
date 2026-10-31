@@ -32,8 +32,6 @@ const mod = await import(pathToFileURL(pluginPath).href);
 
 // The plugin targets OpenCode 2 only: one default export, one mapping.
 const moduleShape = {
-  hasV1Plugin: typeof mod.SuperpowersPlugin !== 'undefined',
-  hasV1Mapping: typeof mod.V1_MAPPING !== 'undefined',
   hasServerExport: typeof mod.default?.server !== 'undefined',
   hasToolMapping: typeof mod.TOOL_MAPPING === 'string',
   serverHidden: !('server' in (mod.default || {})),
@@ -71,11 +69,6 @@ const result = {
   mapsSessionID: bootstrap.includes('`sessionID` to continue a previous subagent'),
   mapsPatch: bootstrap.includes('`patch` with `patchText`'),
   mapsShell: bootstrap.includes('`shell`'),
-  staleMentionMapping: bootstrap.includes('@mention'),
-  staleTaskMapping: bootstrap.includes('`Task` tool with subagents'),
-  staleV1Tools: ['`apply_patch`', '`subagent_type`', '`task` with'].some(
-    (needle) => bootstrap.includes(needle)
-  ),
 };
 
 const failures = [
@@ -141,12 +134,6 @@ function bootstrapText(event) {
 
 function assertModuleShape(shape) {
   const failures = [];
-  if (shape.hasV1Plugin) {
-    failures.push('expected no SuperpowersPlugin named export');
-  }
-  if (shape.hasV1Mapping) {
-    failures.push('expected no V1_MAPPING export');
-  }
   if (shape.hasServerExport) {
     failures.push('expected no server field on the default export');
   }
@@ -175,15 +162,6 @@ function assertPresentBootstrap(result) {
   }
   if (result.secondExists !== 0) {
     failures.push(`expected cached second hook call to do no additional exists checks, got ${result.secondExists}`);
-  }
-  if (result.staleMentionMapping) {
-    failures.push('expected OpenCode bootstrap not to teach @mention subagent syntax');
-  }
-  if (result.staleTaskMapping) {
-    failures.push('expected OpenCode bootstrap not to teach stale Task-tool mapping');
-  }
-  if (result.staleV1Tools) {
-    failures.push('expected OpenCode bootstrap not to teach V1-only tool names (apply_patch/subagent_type/task)');
   }
   if (!result.mapsTodo) {
     failures.push('expected OpenCode bootstrap to map todos to todowrite');

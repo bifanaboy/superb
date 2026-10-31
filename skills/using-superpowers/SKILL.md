@@ -35,6 +35,22 @@ execution handoff, and anything else with enumerated answers.
 Free-form questions stay in prose. When the harness has no question tool,
 present the same options as prose and wait.
 
+## Naming Subagents
+
+Name every subagent `<Smart|Fast> agent — <task>`, using the model role you chose. The harness appends the model. Do not put a model ID in the description.
+
+## Writing to Your Human Partner
+
+Write all prose to your human partner in ASD-STE100 Simplified Technical English.
+
+- One idea per sentence. One instruction per sentence.
+- Keep an instruction to 20 words or fewer. Keep a description to 25 words or fewer.
+- Use active voice. Use simple present or past tense. Do not use gerunds as nouns.
+- Use common words. Do not use idioms, metaphors, slang, or rhetorical questions.
+- Keep code, commands, file paths, URLs, quoted text, error output, and the human's own words unchanged.
+- Write lists as lists.
+- Keep a technical term when it is necessary. Explain it in plain words on first use.
+
 ## Skill Priority
 
 When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are Superpowers' most common process skills, but the rule holds for any of them.

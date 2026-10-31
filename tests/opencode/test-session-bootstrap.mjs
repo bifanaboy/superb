@@ -198,7 +198,7 @@ const empty = { sessionID: 'empty', messages: [] };
 await compactedRoot.invoke(empty);
 assert.deepEqual(empty.messages, []);
 
-// A V1-shaped or empty ctx must not throw out of setup(): the two try/catch
+// A malformed or empty ctx must not throw out of setup(): the two try/catch
 // blocks keep a wrong host from crashing the request pipeline.
 for (const badCtx of [undefined, {}, { skill: {} }, { session: {} }]) {
   await assert.doesNotReject(

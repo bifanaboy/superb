@@ -27,9 +27,10 @@ Before you start implementing, you must, in order:
 
 1. Lay out the approaches in a message of their own, and have your
    human partner pick one (see Lay out the approaches).
-2. Write the design doc, short or full (see Size the Work).
-3. Get their approval of that doc.
-4. Invoke the superpowers:writing-plans skill.
+2. Grill the chosen design until the frontier is empty and they confirm the playback.
+3. Write the design doc, short or full (see Size the Work).
+4. Get their approval of that doc.
+5. Invoke the superpowers:writing-plans skill.
 
 Two things aren't implementing: a spike they said yes to (see Spike to
 feel things out), and doing what they asked once they've opted out of
@@ -147,6 +148,14 @@ there's genuinely one sensible way, say so and explain why the others
 don't fit. This is for how it gets built; for what they want, get them
 describing first.
 
+**Grill the design.** Once they confirm an approach, read `grilling.md` in
+this directory and follow it. The grill replaces the one-question rule for
+the rest of the conversation: ask numbered rounds, each question with your
+recommended answer. When the frontier is empty, play the settled decisions
+back in one chunk and ask what is wrong or missing. Once they confirm,
+continue at Size the Work. If they decline the grill, continue at Size
+the Work.
+
 **Show, don't tell.** Offer the visual companion (below) whenever seeing
 would help more than reading:
 
@@ -187,8 +196,9 @@ they've accepted, put a mockup next to the description.
 
 ## Size the Work
 
-Once you understand what they want and they've picked an approach, say
-how big the work is in plain words. They can override it.
+Once you understand what they want, they have picked an approach, and
+the grill is done, say how big the work is in plain words. They can
+override it.
 
 | Size | The design doc |
 |------|----------------|
@@ -214,7 +224,8 @@ from without going back to your human partner. Cover:
 - goals, non-goals, anti-goals
 - constraints
 - approaches (above)
-- the parts of the how they decided, as they decided them
+- the parts of the how they decided, as they decided them, including
+  the decisions the grill settled
 - what's left to the builder
 
 For a small change, the short design covers the same points in a line
@@ -225,7 +236,7 @@ builder check.
 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`, committed.
 Otherwise, ask. Your human partner's preferences override both.
 
-**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. This rule is for you, the root agent: workers never dispatch subagents.
+**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
 
 **Builder check** (for a project): dispatch a fresh subagent with
 `builder-check-prompt.md` in this directory. When you tell your human

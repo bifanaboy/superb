@@ -1,33 +1,71 @@
-# Superpowers (personal opencode build)
+# Superpowers
 
-Personal fork of Superpowers for OpenCode 2.0.4 or later. Skills and bootstrap for OpenCode.
+Your coding agent should ask before it builds, plan before it codes, and review before it ships.
 
-## Installation (OpenCode)
+Superpowers is a personal OpenCode 2 build of the Superpowers workflow: a set of skills plus a small bootstrap plugin. It turns a vague request into a design, a plan, tested code, a review, and a finished branch.
+
+## What you get
+
+- **Brainstorming** that asks what you want, then grills the chosen design until the spec is complete.
+- **Plans** with exact files, steps, and tests.
+- **Subagent execution** with fast and smart model roles, or native execution in one session.
+- **Test-driven development** on every task.
+- **Code review** before the work is merged.
+- **A finish menu** that asks before it pushes, opens a pull request, or merges.
+- **Autonomous mode** that runs the workflow after you approve the design.
+
+## Install
+
+OpenCode 2.0.4 or later is required.
 
 ```
 Fetch and follow instructions from https://raw.githubusercontent.com/bifanaboy/superpowers/refs/heads/main/.opencode/INSTALL.md
 ```
 
-## What's inside
+Restart OpenCode. Then ask "Tell me about your superpowers" to verify.
 
-Skills live in `skills/`. Bootstrap is `.opencode/plugins/superpowers.js`.
+## Quick start
+
+Load the brainstorming skill and describe what you want:
+
+```
+use skill tool to load brainstorming
+```
+
+The agent asks what you want, offers approaches, and writes a design. You approve the design before any code is written.
+
+## The workflow
+
+1. **Brainstorm and grill.** Describe the goal. Pick an approach. Answer numbered grill rounds until the frontier is empty.
+2. **Plan.** The agent writes a task-by-task plan with tests and commits.
+3. **Execute.** Use subagent-driven development for a fresh implementer and reviewer per task, or native execution in this session.
+4. **Review.** A fresh reviewer checks the whole branch.
+5. **Finish.** The finish menu asks before it pushes, opens a pull request, or merges.
 
 ## Model roles
 
-Superpowers gives every subagent a role: **fast** for transcription, or a
-**smart** role for judgment work. Each role has a paid, a cheap, and a free
-model. Set them once with `@choosing-superpowers-models`, or by asking in
-plain words. The config lives at
-`~/.config/opencode/superpowers/models.json`. If a model fails, the next
-slot is tried without a message. Config problems and total failure appear
-in the summary at the end of the task.
+Every subagent gets a role. **Fast** is for transcription or one or two files with a clear spec. **Smart** is for reviews, architecture, and debugging. Each role has a paid, a cheap, and a free model.
 
-See `docs/superpowers/specs/2026-10-31-superpowers-model-tiers-design.md`.
+Set the models once with `@choosing-superpowers-models`, or by asking in plain words. The config lives at:
+
+```
+~/.config/opencode/superpowers/models.json
+```
+
+A model that fails a subagent dispatch is skipped for the rest of the session.
 
 ## Autonomous mode
 
-After you approve a finalized design in brainstorming, the agent runs the full workflow on its own: git worktree setup, planning, implementation (TDD), code review, and finishing. It decides open choices itself and records each as a `Ruling: [tag] ...` line. It stops only for destructive or security-sensitive actions.
+After you approve the design, autonomous mode runs the workflow on its own. It records each open choice as a ruling and stops only for destructive or security-sensitive actions.
 
-See `docs/superpowers/specs/2026-10-30-autonomous-mode-design.md` and issue #5.
+See [the design](docs/superpowers/specs/2026-10-30-autonomous-mode-design.md).
 
-License: MIT.
+## Learn more
+
+- [Grilling phase design](docs/superpowers/specs/2026-10-31-grilling-phase-design.md)
+- [Model roles design](docs/superpowers/specs/2026-10-31-superpowers-model-tiers-design.md)
+- [Install instructions](.opencode/INSTALL.md)
+
+## License
+
+MIT.

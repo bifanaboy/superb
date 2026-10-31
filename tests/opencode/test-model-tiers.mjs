@@ -84,6 +84,8 @@ if (setup) {
     setup.includes('tools.opencode.models({ all: true })'));
   check('setup skill treats the default listing as incomplete',
     /default listing/i.test(setup));
+  check('setup skill says a failed model is skipped for the session',
+    /fails a subagent dispatch.*skipped/i.test(setup));
 }
 
 // --- Dispatch skills -------------------------------------------------------
@@ -100,6 +102,8 @@ for (const id of DISPATCH_SKILLS) {
   check(`${id} skips empty or absent slots`, /empty or absent slot/.test(text));
   check(`${id} defines exhaustion when no slot remains`, /no usable slot remains/.test(text));
   check(`${id} reports config problems once per session`, /report config problems once per session/i.test(text));
+  check(`${id} names the MODEL SKIP rule`, /MODEL SKIP/.test(text));
+  check(`${id} calls a listed model a dead slot`, /dead slot/.test(text));
   check(`${id} checks the full model catalog`, /models\(\{ all: true \}\)/.test(block ?? text));
   if (block) blocks.push({ id, block });
 }

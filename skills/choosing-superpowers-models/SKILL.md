@@ -26,6 +26,8 @@ Two roles. Each role has three slots.
 Fast work is transcription, or 1-2 files with a clear spec. Smart work is
 everything else, including every review, architecture, and debugging.
 
+A model that fails a subagent dispatch is skipped for the rest of the session.
+
 ## Config file
 
 Path: `~/.config/opencode/superpowers/models.json`
