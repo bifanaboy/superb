@@ -60,6 +60,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-dispatch-write-surface.sh  Verify the parallel-dispatch write-surface contract"
             echo "  test-ui-skills.sh       Verify the UI skills, references and fixtures"
             echo "  test-rename-complete.sh Verify the old plugin name is gone"
+            echo "  test-brainstorm-helper.sh  Verify the companion WebSocket URL scheme"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -91,6 +92,7 @@ tests=(
     "test-dispatch-write-surface.sh"
     "test-ui-skills.sh"
     "test-rename-complete.sh"
+    "test-brainstorm-helper.sh"
 )
 
 # Integration tests (require OpenCode)
