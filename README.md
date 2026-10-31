@@ -44,7 +44,7 @@ The agent asks what you want, offers approaches, and writes a design. You approv
 
 ## Model roles
 
-Every subagent gets a role. **Fast** is for transcription or one or two files with a clear spec. **Smart** is for reviews, architecture, and debugging. Each role has a paid, a cheap, and a free model.
+Every subagent gets a role. **Fast** is for transcription or one or two files with a clear spec. **Smart** is for reviews, architecture, and debugging. Each role has a costly, a cheap, and a free model.
 
 Set the models once with `@choosing-superpowers-models`, or by asking in plain words. The config lives at:
 
