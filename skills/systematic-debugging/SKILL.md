@@ -60,6 +60,7 @@ You MUST complete each phase before proceeding to the next.
    - What are the exact steps?
    - Does it happen every time?
    - If not reproducible → gather more data, don't guess
+   - If it only fails in production or staging, read `observability-evidence.md` in this directory
 
 3. **Check Recent Changes**
    - What changed that could cause this?
@@ -214,6 +215,23 @@ You MUST complete each phase before proceeding to the next.
 
    This is NOT a failed hypothesis - this is a wrong architecture.
 
+## Prevent Recurrence
+
+**After the fix is verified:**
+
+1. **Search for the same pattern**
+   - The same bug usually exists in more than one place
+   - Grep for the broken call, the missing check, the same assumption
+   - Fix each site you find, or file it and say so
+
+2. **Keep the regression test**
+   - The test from Phase 4 stays in the suite
+   - Name it after the behavior, not the issue number
+
+3. **Watch for it in production**
+   - If the bug ran in production, add an alert or a log line
+   - The next occurrence should be visible before a user reports it
+
 ## Red Flags - STOP and Follow Process
 
 If you catch yourself thinking:
@@ -285,3 +303,4 @@ These techniques are part of systematic debugging and available in this director
 - **`defense-in-depth.md`** - Add validation at multiple layers after finding root cause
 - **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling
 - **`competing-hypotheses.md`** - Arbitrate a bug with more than one plausible cause
+- **`observability-evidence.md`** - Find the cause of a bug you cannot reproduce
