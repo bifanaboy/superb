@@ -55,7 +55,16 @@ Group failures by what's broken:
 
 Each domain is independent - fixing tool approval doesn't affect abort tests.
 
-### 2. Create Focused Agent Tasks
+### 2. Check the Write Surface
+
+Before you dispatch, list the files and directories each agent will change.
+Dispatch agents in parallel only when these lists share no file.
+Read-only agents can share files. Only writes must be disjoint.
+If two agents need the same file, run them one after the other, or give that
+file to one owner. A shared test file is a shared write surface.
+If you cannot name the surfaces yet, send one read-only investigator first, or make each agent report its changed files before you merge.
+
+### 3. Create Focused Agent Tasks
 
 Each agent gets:
 - **Specific scope:** One test file or subsystem
@@ -67,7 +76,7 @@ Each agent gets:
 
 Name each subagent `<Role> agent — <task>`, using the role you dispatched.
 
-### 3. Dispatch in Parallel
+### 4. Dispatch in Parallel
 
 Issue all three subagent dispatches in the same response — they run in parallel:
 
@@ -80,7 +89,9 @@ Subagent (general-purpose): "Fix tool-approval-race-conditions.test.ts failures"
 
 Multiple dispatch calls in one response = parallel execution. One per response = sequential.
 
-### 4. Review and Integrate
+If one agent finds a cause that changes another agent's task, stop the dependent agent and re-dispatch it with the new fact. Do not let it finish on a stale premise.
+
+### 5. Review and Integrate
 
 When agents return:
 - Read each summary
@@ -130,6 +141,9 @@ Return: Summary of what you found and what you fixed.
 **❌ Vague output:** "Fix it" - you don't know what changed
 **✅ Specific:** "Return summary of root cause and changes"
 
+**❌ Parallel because it feels faster:** "Run all four at once" - agents collide
+**✅ Parallel only when write surfaces do not collide:** "Three files, one owner each"
+
 ## When NOT to Use
 
 **Related failures:** Fixing one might fix others - investigate together first
@@ -169,3 +183,5 @@ After agents return:
 2. **Check for conflicts** - Did agents edit same code?
 3. **Run full suite** - Verify all fixes work together
 4. **Spot check** - Agents can make systematic errors
+
+A skipped check must appear in the report. A summary that hides a skipped check is a defect, not a pass.
