@@ -302,7 +302,9 @@ When the final review is clean and its fixes are committed, delete this
 plan's workspace directory — the git history is the record now. Sibling
 directories belong to other plans; leave them alone.
 
-Use superpowers:finishing-a-development-branch.
+Use superpowers:finishing-a-development-branch. Do not push, open a pull
+request, or merge from this flow directly — its four-option menu is the gate,
+and its answer decides what happens.
 
 ## Common Rationalizations
 
