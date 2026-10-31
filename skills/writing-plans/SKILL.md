@@ -186,6 +186,12 @@ them to review the plan and choose an execution method before implementation.
 
 **When no execution method has already been supplied:**
 
+Present this with the harness's question tool when it has one — on OpenCode,
+`question` with two entries: one asking whether the plan captures what they
+want, and one asking which execution approach to use, with Subagent-driven
+and Native as the options and the recommendation in the description.
+Harnesses without a question tool get the prose block below verbatim.
+
 **"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Please review the plan. Which execution approach would you prefer?**
 
 - **Subagent-driven** - A fresh subagent implements each task and a fresh reviewer checks it before the next one starts, then a whole-branch review at the end. Most thorough; costs a fresh context per task and per review.

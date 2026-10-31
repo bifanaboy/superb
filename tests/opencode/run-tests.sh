@@ -49,6 +49,8 @@ while [[ $# -gt 0 ]]; do
             echo "  test-todo-nudge.sh       Verify the todo nudge and the edit/shell gate"
             echo "  test-skill-registration.sh  Verify V2 skill registration contract (2.0.4 path field)"
             echo "  test-model-tiers.sh      Verify the fast/smart model role contract"
+            echo "  test-pr-gate.sh         Verify the PR gate before any pull request"
+            echo "  test-question-tool.sh   Verify fixed-choice questions use the question tool"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -69,6 +71,8 @@ tests=(
     "test-todo-nudge.sh"
     "test-skill-registration.sh"
     "test-model-tiers.sh"
+    "test-pr-gate.sh"
+    "test-question-tool.sh"
 )
 
 # Integration tests (require OpenCode)
