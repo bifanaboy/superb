@@ -54,6 +54,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-subagent-naming.sh Verify subagent names carry the model role"
             echo "  test-ste100.sh          Verify root prose uses Simplified Technical English"
             echo "  test-dead-models.sh     Verify a failed model is skipped for the session"
+            echo "  test-handoff-choice.sh  Verify the brainstorming handoff choice"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -79,6 +80,7 @@ tests=(
     "test-subagent-naming.sh"
     "test-ste100.sh"
     "test-dead-models.sh"
+    "test-handoff-choice.sh"
 )
 
 # Integration tests (require OpenCode)

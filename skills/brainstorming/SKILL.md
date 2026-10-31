@@ -30,7 +30,7 @@ Before you start implementing, you must, in order:
 2. Grill the chosen design until the frontier is empty and they confirm the playback.
 3. Write the design doc, short or full (see Size the Work).
 4. Get their approval of that doc.
-5. Invoke the superpowers:writing-plans skill.
+5. After approval, follow the `## Handoff` section.
 
 Two things aren't implementing: a spike they said yes to (see Spike to
 feel things out), and doing what they asked once they've opted out of
@@ -269,9 +269,28 @@ and the gate goes with it. A spike they said yes to may be built; it
 stays labeled throwaway, and keeping what it produced is a new request
 that comes back through this gate.
 
-After the design doc is approved, the next step is the plan: invoke
-superpowers:writing-plans and no other skill.
 </HARD-GATE>
+
+## Handoff
+
+After the design doc is approved, ask one question with the question tool:
+
+- **Implement now** — invoke `superpowers:writing-plans` and continue.
+- **File the spec as an issue** — write the design doc to the issue body, then stop.
+
+For the issue path:
+
+- If the conversation names the origin issue, use it. If not, ask for its number.
+- If the user has no issue, create a new issue.
+- Replace the issue body with the design doc.
+- Use the issue tracker available to you, such as the GitHub tools or `gh`.
+- Do not invoke `superpowers:writing-plans`.
+
+If no issue tracker is available, keep the local design doc, say so, and
+stop.
+
+On a harness without a question tool, present the two options as prose and
+wait.
 
 ## Red Flags
 
