@@ -150,7 +150,7 @@ Skills speak in actions ("create a todo", "dispatch a subagent", "read a file").
 
 **V2 (`opencode` 2.0.4 or later; `opencode2` may be available as an alias):**
 
-- "Create a todo" → V2 has no todo tool; track the plan in a markdown file instead
+- "Create a todo" → `todowrite` (when `experimental.todo` is enabled; otherwise track the plan in the ledger)
 - `Subagent (general-purpose):` template → `subagent` tool with `agent: "general"` (or `"explore"`); pass `sessionID` to continue a previous subagent
 - "Invoke a skill" → OpenCode's native `skill` tool
 - "Read a file" → `read`
