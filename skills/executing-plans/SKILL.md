@@ -237,8 +237,10 @@ Run `../subagent-driven-development/scripts/review-package PLAN_FILE MERGE_BASE 
 (MERGE_BASE = the commit the branch started from, e.g.
 `git merge-base main HEAD`) and review from the file it prints.
 
-**With a subagent tool:** dispatch the reviewer on the most capable
-available model — the whole-branch review is a judgment task — using
+**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `paid`, then `cheap`, then `free` — three attempts at most. Skip an empty slot, or a model absent from `tools.opencode.models({})`. If all three fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: paid|cheap|free)` in the ledger, and one ruling line per fallback. At the end of the task, list config problems in one summary block and name "let's set up my superpowers models". Fix-loop rounds 4-5 use the smart chain; there is no role above smart. This rule is for you, the root agent: workers never dispatch subagents.
+
+**With a subagent tool:** dispatch the reviewer on the smart chain — the
+whole-branch review is a judgment task — using
 superpowers:requesting-code-review's
 [code-reviewer.md](../requesting-code-review/code-reviewer.md), with the
 package path, the plan and spec paths, the plan's Review Focus section
@@ -246,8 +248,8 @@ verbatim if it has one (the input classes and failure modes the plan's
 tests do not exercise — the reviewer checks each deliberately), and a
 pointer to the ledger's `Ruling:` lines so it can weigh the calls you
 made. Specify the model
-explicitly; an omitted model inherits the session's, which may not be the
-most capable. This is the one fresh context the whole run buys. Do not
+explicitly from the smart chain; an omitted model inherits the session's
+model, which may not be the one you chose. This is the one fresh context the whole run buys. Do not
 skip it, and do not replace it with your own read of the diff.
 
 **Without a subagent tool:** read code-reviewer.md and perform that review
