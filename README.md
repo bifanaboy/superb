@@ -1,6 +1,6 @@
 # Superpowers (personal opencode build)
 
-Personal, opencode-only fork of Superpowers. Skills + bootstrap for OpenCode.
+Personal fork of Superpowers for OpenCode 2.0.4 or later. Skills and bootstrap for OpenCode.
 
 ## Installation (OpenCode)
 
