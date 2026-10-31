@@ -46,6 +46,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-plugin-loading.sh  Verify plugin installation and structure"
             echo "  test-bootstrap-caching.sh  Verify bootstrap content caching"
             echo "  test-session-bootstrap.sh  Verify session classification and lookup recovery"
+            echo "  test-todo-nudge.sh       Verify the todo nudge and the edit/shell gate"
             echo "  test-skill-registration.sh  Verify V2 skill registration contract (2.0.4 path field)"
             echo "  test-model-tiers.sh      Verify the fast/smart model role contract"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
@@ -65,6 +66,7 @@ tests=(
     "test-plugin-loading.sh"
     "test-bootstrap-caching.sh"
     "test-session-bootstrap.sh"
+    "test-todo-nudge.sh"
     "test-skill-registration.sh"
     "test-model-tiers.sh"
 )
