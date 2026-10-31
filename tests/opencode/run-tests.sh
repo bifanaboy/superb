@@ -67,6 +67,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-sdd-scripts.sh     Verify the SDD workspace, ledger, and review scripts"
             echo "  test-no-orphan-hooks.sh Verify the orphaned hook files are gone"
             echo "  test-opencode-only.sh   Verify shipped files name only OpenCode"
+            echo "  test-brainstorm-start.sh Verify the dead start-server block is gone"
             echo "  test-tools.sh           Test the native skill tool (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -105,6 +106,7 @@ tests=(
     "test-sdd-scripts.sh"
     "test-no-orphan-hooks.sh"
     "test-opencode-only.sh"
+    "test-brainstorm-start.sh"
 )
 
 # Integration tests (require OpenCode)
