@@ -152,21 +152,16 @@ const _cacheChildSession = (sessionID, isChild) => {
 // --- Todo staleness tracking ------------------------------------------------
 //
 // The todo tool is easy to create and easy to forget. After the first
-// todowrite in a session, count tool calls since the last one. The context
-// hook adds one short system line when the count crosses the threshold. That
-// line exists only for the model call that carries it, so it never grows the
-// persisted history.
-// --- Todo staleness tracking ------------------------------------------------
-//
-// The todo tool is easy to create and easy to forget. After the first
 // todowrite in a session, count tool calls since the last one. A soft system
 // line appears at the nudge threshold; a permission deny at the block
-// threshold stops edit/shell until the model updates the list. The soft line
-// exists only for the model call that carries it, so it never grows the
-// persisted history.
+// threshold stops file mutations and shell commands until the model updates
+// the list. The soft line exists only for the model call that carries it, so
+// it never grows the persisted history.
 const TODO_NUDGE_AFTER = 5;
 const TODO_BLOCK_AFTER = 8;
-const TODO_BLOCK_ACTIONS = new Set(['edit', 'shell']);
+// write and patch usually report the `edit` action, but some host versions
+// report the tool name. Cover both so the gate cannot be skipped.
+const TODO_BLOCK_ACTIONS = new Set(['edit', 'write', 'patch', 'shell']);
 const _todoState = new Map(); // sessionID -> { seen, callsSince, items }
 
 const _todoStateFor = (sessionID) => {
@@ -289,22 +284,29 @@ async function setup(ctx) {
   }
 
   const nudgeAfter = _positiveInt(ctx?.options?.todoNudgeAfter, TODO_NUDGE_AFTER);
-  const blockAfter = _positiveInt(ctx?.options?.todoBlockAfter, TODO_BLOCK_AFTER);
+  const blockAfter = Math.max(
+    _positiveInt(ctx?.options?.todoBlockAfter, TODO_BLOCK_AFTER),
+    nudgeAfter,
+  );
 
   // 2. Track tool calls so the nudge and the gate can see a stale todo list
   try {
     await ctx.tool.hook('execute.after', (event) => {
-      if (!event || !event.sessionID) return;
-      const state = _todoStateFor(event.sessionID);
-      if (event.tool === 'todowrite') {
-        if (event.status !== 'completed') return;
-        const todos = event.input && event.input.todos;
-        if (Array.isArray(todos)) state.items = todos;
-        state.seen = Array.isArray(todos) ? todos.length > 0 : true;
-        state.callsSince = 0;
-        return;
+      try {
+        if (!event || !event.sessionID) return;
+        const state = _todoStateFor(event.sessionID);
+        if (event.tool === 'todowrite') {
+          if (event.status !== 'completed') return;
+          const todos = event.input && event.input.todos;
+          if (Array.isArray(todos)) state.items = todos;
+          state.seen = Array.isArray(todos) ? todos.length > 0 : false;
+          state.callsSince = 0;
+          return;
+        }
+        state.callsSince += 1;
+      } catch (err) {
+        console.error('[superpowers] todo tracking failed:', err);
       }
-      state.callsSince += 1;
     });
   } catch (err) {
     console.error('[superpowers] todo tracking hook registration failed:', err);
@@ -313,15 +315,19 @@ async function setup(ctx) {
   // 3. Deny work actions while the todo list is stale. Reading stays open.
   try {
     await ctx.permission.hook('evaluate', async (event) => {
-      if (!event || !TODO_BLOCK_ACTIONS.has(event.action)) return;
-      const state = event.sessionID ? _todoState.get(event.sessionID) : undefined;
-      if (!state || !state.seen || state.callsSince < blockAfter) return;
-      if (typeof ctx.session.get === 'function' && await isChildSession(
-        (id) => ctx.session.get({ sessionID: id }),
-        event.sessionID,
-      )) return;
-      event.effect = 'deny';
-      event.message = _todoBlock(state);
+      try {
+        if (!event || !TODO_BLOCK_ACTIONS.has(event.action)) return;
+        const state = event.sessionID ? _todoState.get(event.sessionID) : undefined;
+        if (!state || !state.seen || state.callsSince < blockAfter) return;
+        if (typeof ctx.session.get === 'function' && await isChildSession(
+          (id) => ctx.session.get({ sessionID: id }),
+          event.sessionID,
+        )) return;
+        event.effect = 'deny';
+        event.message = _todoBlock(state);
+      } catch (err) {
+        console.error('[superpowers] todo gate failed:', err);
+      }
     });
   } catch (err) {
     console.error('[superpowers] todo gate hook registration failed:', err);

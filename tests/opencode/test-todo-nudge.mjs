@@ -7,12 +7,13 @@ assert.ok(inputPath, 'pass the plugin module path');
 const pluginURL = pathToFileURL(fs.realpathSync(inputPath));
 let generation = 0;
 
-async function makeHarness({ parentID } = {}) {
+async function makeHarness({ parentID, options } = {}) {
   const mod = await import(`${pluginURL.href}?todo-test=${++generation}`);
   let contextHook;
   let afterHook;
   let evaluateHook;
   await mod.default.setup({
+    options,
     skill: { transform: async (fn) => fn({ add: () => {} }) },
     session: {
       hook: async (name, cb) => { if (name === 'context') contextHook = cb; },
@@ -100,6 +101,8 @@ async function makeHarness({ parentID } = {}) {
   assert.match(edit.message, /"task" is still in_progress/);
   assert.match(edit.message, /Run `todowrite` now/);
   assert.equal((await h.evaluate('shell')).effect, 'deny', 'eight calls deny shell');
+  assert.equal((await h.evaluate('write')).effect, 'deny', 'eight calls deny write');
+  assert.equal((await h.evaluate('patch')).effect, 'deny', 'eight calls deny patch');
   assert.equal((await h.evaluate('read')).effect, 'allow', 'reads stay open');
   assert.equal((await h.evaluate('grep')).effect, 'allow', 'grep stays open');
   assert.equal((await h.evaluate('todowrite')).effect, 'allow', 'todowrite stays open');
@@ -133,6 +136,40 @@ async function makeHarness({ parentID } = {}) {
   for (let i = 0; i < 8; i++) await h.after('edit');
   assert.equal((await h.context()).length, 0, 'an empty list gets no nudge');
   assert.equal((await h.evaluate('edit')).effect, 'allow', 'an empty list gets no gate');
+}
+
+// Every tool call counts, not only edit and shell.
+{
+  const h = await makeHarness();
+  await h.afterDone();
+  for (let i = 0; i < 8; i++) await h.after('read');
+  assert.equal((await h.evaluate('edit')).effect, 'deny', 'read calls still advance the counter');
+}
+
+// Options move the thresholds, and the block point never lands before the nudge.
+{
+  const h = await makeHarness({ options: { todoNudgeAfter: 2, todoBlockAfter: 3 } });
+  await h.afterDone();
+  await h.after('edit');
+  await h.after('edit');
+  assert.equal((await h.context()).length, 1, 'todoNudgeAfter: 2 nudges at two calls');
+  assert.equal((await h.evaluate('edit')).effect, 'allow', 'three calls are below the block');
+  await h.after('edit');
+  assert.equal((await h.evaluate('edit')).effect, 'deny', 'todoBlockAfter: 3 blocks at three calls');
+}
+{
+  const h = await makeHarness({ options: { todoNudgeAfter: 5, todoBlockAfter: 2 } });
+  await h.afterDone();
+  for (let i = 0; i < 4; i++) await h.after('edit');
+  assert.equal((await h.evaluate('edit')).effect, 'allow', 'a block below the nudge is clamped to it');
+  await h.after('edit');
+  assert.equal((await h.evaluate('edit')).effect, 'deny', 'the clamped block lands at five calls');
+}
+
+// A V1-shaped or empty ctx must not throw out of setup().
+{
+  const mod = await import(`${pluginURL.href}?todo-test=${++generation}`);
+  await assert.doesNotReject(() => mod.default.setup(undefined), 'setup(undefined) must not throw');
 }
 
 // Child sessions stay silent and open.
