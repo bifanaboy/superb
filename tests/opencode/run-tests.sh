@@ -63,6 +63,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-brainstorm-helper.sh  Verify the companion WebSocket URL scheme"
             echo "  test-brainstorm-server.sh  Verify companion auth and WebSocket handling"
             echo "  test-find-polluter.sh   Verify the pre-existing pollution guard"
+            echo "  test-task-brief.sh      Verify task briefs stop at the next section"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -97,6 +98,7 @@ tests=(
     "test-brainstorm-helper.sh"
     "test-brainstorm-server.sh"
     "test-find-polluter.sh"
+    "test-task-brief.sh"
 )
 
 # Integration tests (require OpenCode)
