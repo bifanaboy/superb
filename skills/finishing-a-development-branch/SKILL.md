@@ -52,12 +52,16 @@ Confirm before merging: merging into the wrong base is expensive to undo.
 
 ## Step 4: Present Options
 
+**Gate:** Do not push, open a pull request, or merge before this menu is
+presented and answered. The answer is the gate: option 1 authorizes the
+whole sequence that follows, with no further prompt.
+
 **Normal repo and named-branch worktree — present exactly these 4 options:**
 
 ```
 Implementation complete. What would you like to do?
 
-1. Ship it: commit, push, create PR, merge, and clean up (default)
+1. Ship it: commit, push, create PR, merge, and clean up
 2. Merge back to <base-branch> locally
 3. Push and create a Pull Request
 4. Keep the branch as-is (I'll handle it later)
@@ -84,7 +88,7 @@ is theirs.
 
 ## Step 5: Execute Choice
 
-### Option 1 (default): Ship it
+### Option 1: Ship it
 
 Commit any uncommitted changes, push the branch, create a PR, merge it with a
 merge commit, then clean up the branch and worktree and sync `main`.
@@ -238,9 +242,10 @@ place. If your platform provides a workspace-exit tool, use it.
 
 | Option | Merge | Push | Keep Worktree | Cleanup Branch |
 |--------|-------|------|---------------|----------------|
-| 1. Merge locally | yes | - | - | yes |
-| 2. Create PR | - | yes | yes | - |
-| 3. Keep as-is | - | - | yes | - |
+| 1. Ship it | yes | yes | - | yes |
+| 2. Merge locally | yes | - | - | yes |
+| 3. Create PR | - | yes | yes | - |
+| 4. Keep as-is | - | - | yes | - |
 | Discard (explicit request only) | - | - | - | yes (force) |
 
 ## Common Rationalizations
