@@ -99,6 +99,8 @@ if ! command -v opencode &> /dev/null; then
     exit 0
 fi
 
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
+
 run_opencode() {
     local result_var="$1"
     local dir="$2"
@@ -107,7 +109,11 @@ run_opencode() {
     local exit_code
 
     set +e
-    command_output=$(cd "$dir" && timeout "${OPENCODE_TEST_TIMEOUT_SECONDS}s" opencode run --print-logs --format json "$prompt" 2>&1)
+    if [ -n "$TIMEOUT_BIN" ]; then
+        command_output=$(cd "$dir" && "$TIMEOUT_BIN" "${OPENCODE_TEST_TIMEOUT_SECONDS}s" opencode run --print-logs --format json "$prompt" 2>&1)
+    else
+        command_output=$(cd "$dir" && opencode run --print-logs --format json "$prompt" 2>&1)
+    fi
     exit_code=$?
     set -e
 

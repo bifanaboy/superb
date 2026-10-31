@@ -66,7 +66,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-task-brief.sh      Verify task briefs stop at the next section"
             echo "  test-sdd-scripts.sh     Verify the SDD workspace, ledger, and review scripts"
             echo "  test-no-orphan-hooks.sh Verify the orphaned hook files are gone"
-            echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
+            echo "  test-tools.sh           Test the native skill tool (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
             ;;
