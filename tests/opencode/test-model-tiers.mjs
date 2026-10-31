@@ -76,6 +76,10 @@ if (setup) {
   check('setup skill preserves a variant suffix', setup.includes('#variant'));
   check('setup skill warns about duplicate models',
     /two slots hold the same model/i.test(setup));
+  check('setup skill gives each warning once',
+    /say each finding once/i.test(setup));
+  check('setup skill keeps duplicates out of the task summary',
+    /do not repeat it in the task summary/i.test(setup));
 }
 
 // --- Dispatch skills -------------------------------------------------------
@@ -91,6 +95,7 @@ for (const id of DISPATCH_SKILLS) {
   check(`${id} names the setup mention`, text.includes(MENTION));
   check(`${id} skips empty or absent slots`, /empty or absent slot/.test(text));
   check(`${id} defines exhaustion when no slot remains`, /no usable slot remains/.test(text));
+  check(`${id} reports config problems once per session`, /report config problems once per session/i.test(text));
   if (block) blocks.push({ id, block });
 }
 
