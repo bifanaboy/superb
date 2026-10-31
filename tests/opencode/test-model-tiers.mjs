@@ -80,6 +80,10 @@ if (setup) {
     /say each finding once/i.test(setup));
   check('setup skill keeps duplicates out of the task summary',
     /do not repeat it in the task summary/i.test(setup));
+  check('setup skill asks for the full model catalog',
+    setup.includes('tools.opencode.models({ all: true })'));
+  check('setup skill treats the default listing as incomplete',
+    /default listing/i.test(setup));
 }
 
 // --- Dispatch skills -------------------------------------------------------
@@ -96,6 +100,7 @@ for (const id of DISPATCH_SKILLS) {
   check(`${id} skips empty or absent slots`, /empty or absent slot/.test(text));
   check(`${id} defines exhaustion when no slot remains`, /no usable slot remains/.test(text));
   check(`${id} reports config problems once per session`, /report config problems once per session/i.test(text));
+  check(`${id} checks the full model catalog`, /models\(\{ all: true \}\)/.test(block ?? text));
   if (block) blocks.push({ id, block });
 }
 
