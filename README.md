@@ -25,6 +25,16 @@ Fetch and follow instructions from https://raw.githubusercontent.com/bifanaboy/s
 
 Restart OpenCode. Then ask "Tell me about your superpowers" to verify.
 
+### Browser setup for the UI skills
+
+The UI skills use the browser tool from your harness. On the OpenCode desktop
+app, the built-in `browser` namespace is enough. On the TUI or CLI, add a
+browser MCP such as the Playwright MCP.
+
+Without a browser tool, `ui-breaker` stops and reports the blocker. It does not
+guess. See [Install instructions](.opencode/INSTALL.md#browser-setup-for-the-ui-skills)
+for the config.
+
 ## Quick start
 
 Load the brainstorming skill and describe what you want:

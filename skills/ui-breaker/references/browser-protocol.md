@@ -1,5 +1,36 @@
 # Browser protocol
 
+## Setup
+
+The skill ships no browser. Use the tool the harness provides.
+
+- **OpenCode desktop app:** the built-in `browser` namespace.
+- **TUI or CLI:** a browser MCP, such as the Playwright MCP.
+
+Merge this into the existing `mcp.servers` object in
+`~/.config/opencode/opencode.json`:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "-y", "@playwright/mcp@latest", "--headless"],
+        "codemode": false
+      }
+    }
+  }
+}
+```
+
+Check it with `opencode mcp list`. If the browser cannot launch, run
+`npx playwright install chrome`, or set `--executable-path <path>` to an
+installed Chromium.
+
+If no browser tool is available, stop. Do not substitute HTTP fetches or a
+separate browser.
+
 ## The namespace
 
 Use the browser tool the harness provides. Two common backends:

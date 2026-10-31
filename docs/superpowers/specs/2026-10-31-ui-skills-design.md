@@ -55,20 +55,18 @@ They form a cycle: break, report, fix, verify.
 
 ## Constraints
 
-- **Harness browser tool only.** No bundled Playwright script, no external
-  `browse` CLI, no HTTP fetch as a substitute. On OpenCode 2 the tool is the
-  built-in `browser` Code Mode namespace. In this CLI it exposes tabs,
-  navigation, snapshots, search, click, fill, press, hover, select, resize and
-  viewport control, screenshots, console and network inspection, eval,
-  Lighthouse and accessibility audits, performance traces, and heap inspection.
-  Screenshots need a focused visible tab. If the namespace is missing, the
-  breaker stops.
+- **Harness browser tool.** The browser backend is the tool the harness
+  provides. On the OpenCode desktop app it is the built-in `browser` namespace.
+  On the TUI or CLI it is a configured browser MCP, such as the Playwright MCP.
+  The plugin ships no browser. It does not use a bundled Playwright script or an
+  HTTP fetch as a substitute. The skill discovers the tool names and
+  capabilities first. If no browser tool is available, the breaker stops.
 - **`ui-breaker` is read-only in effect.** It never clicks a write action.
 - **`ui-design` edits code but does not self-certify.** It asks `ui-breaker`
   to check the result.
 - **OpenCode-first.** The repo is a personal OpenCode 2 build. The browser
-  protocol must name the harness's tools generically and give a mapping in a
-  reference file.
+  protocol names both the built-in namespace and the Playwright MCP tools, and
+  discovers the actual names in the session.
 - **The repo's writing-skills Iron Law applies.** No new skill without a
   failing pressure test first.
 - **Flat namespace.** Both skills live under `skills/`, with `name` and
@@ -262,8 +260,8 @@ checked.
 - Screenshots for failures.
 - Snapshots for element existence and state.
 - Console errors, network failures, broken images.
-- A Lighthouse accessibility audit through the browser namespace. If
-  Lighthouse is unavailable, a manual checklist, stated as such.
+- A Lighthouse accessibility audit if the backend exposes it. If not, the
+  accessibility snapshot and computed styles, stated as such.
 - Viewport checks for overflow.
 - If the harness browser tool lacks a capability, say so. Do not substitute.
 
@@ -419,8 +417,9 @@ Cross-links:
 - `ui-design/SKILL.md` links to `../ui-breaker/references/browser-protocol.md`
   for capture and verification.
 
-No scripts. No new dependencies. The harness browser tool is the only browser
-backend.
+No scripts. No new dependencies in the plugin. The browser backend is
+configured in the harness: the built-in `browser` namespace on the desktop app,
+or a browser MCP such as the Playwright MCP on the TUI/CLI.
 
 ## Testing
 
@@ -452,7 +451,8 @@ Other tests:
 ## Risks and limits
 
 - The harness browser tool may be missing or limited. The breaker stops; it does
-  not fake evidence.
+  not fake evidence. The Playwright MCP needs a browser binary: install Chrome
+  for Testing or set `--executable-path`.
 - No write actions means forms, checkout, delete and send flows are not tested.
   The report must say so.
 - Headless login needs the credential file. SSO and MFA may block it. The report
@@ -469,8 +469,8 @@ Other tests:
 ## What is left to the builder
 
 - Exact `SKILL.md` wording and token budgets.
-- The browser protocol's tool mapping for the harness: which snapshot, click,
-  eval and screenshot tools to use.
+- The browser protocol's setup note and tool mapping: the desktop app's
+  `browser` namespace, or the Playwright MCP's `browser_*` tools.
 - The pressure-test fixtures: the broken demo page, the login page, and the
   bland demo page.
 - The credential file template and the variable-name discovery step.
