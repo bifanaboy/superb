@@ -198,4 +198,13 @@ const empty = { sessionID: 'empty', messages: [] };
 await compactedRoot.invoke(empty);
 assert.deepEqual(empty.messages, []);
 
+// A V1-shaped or empty ctx must not throw out of setup(): the two try/catch
+// blocks keep a wrong host from crashing the request pipeline.
+for (const badCtx of [undefined, {}, { skill: {} }, { session: {} }]) {
+  await assert.doesNotReject(
+    () => import(`${pluginURL.href}?session-test=${++generation}`).then((m) => m.default.setup(badCtx)),
+    `setup() must not throw for ctx ${JSON.stringify(badCtx)}`
+  );
+}
+
 console.log('Session classification, recovery and cache lifetime passed');

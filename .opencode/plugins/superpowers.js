@@ -123,11 +123,10 @@ ${TOOL_MAPPING}
 // restart design/approval cycles for work the parent already authorised; the
 // <SUBAGENT-STOP> note inside the bootstrap relies on model compliance, which
 // is not reliable. Detect child sessions structurally instead: a parentID on
-// the session is the child signal on both flavors (task sessions are created
-// with one; top-level sessions simply lack the field), so when the session
-// carrying the message has a parentID we skip bootstrap injection. Skills
-// stay registered for every session — workers keep explicit access to
-// execution skills.
+// the session is the child signal (task sessions are created with one;
+// top-level sessions simply lack the field), so when the session carrying the
+// message has a parentID we skip bootstrap injection. Skills stay registered
+// for every session — workers keep explicit access to execution skills.
 
 // sessionID -> is-child decision. parentID never changes for a session, so
 // the result is cached until eviction and the injection hook (which fires on
