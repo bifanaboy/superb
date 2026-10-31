@@ -61,6 +61,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-ui-skills.sh       Verify the UI skills, references and fixtures"
             echo "  test-rename-complete.sh Verify the old plugin name is gone"
             echo "  test-brainstorm-helper.sh  Verify the companion WebSocket URL scheme"
+            echo "  test-brainstorm-server.sh  Verify companion auth and WebSocket handling"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -93,6 +94,7 @@ tests=(
     "test-ui-skills.sh"
     "test-rename-complete.sh"
     "test-brainstorm-helper.sh"
+    "test-brainstorm-server.sh"
 )
 
 # Integration tests (require OpenCode)
