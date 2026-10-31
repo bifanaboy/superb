@@ -233,10 +233,10 @@ or two each and goes straight to your human partner, without the
 builder check.
 
 **Where it goes:** in a software repo,
-`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`, committed.
+`docs/superb/specs/YYYY-MM-DD-<topic>-design.md`, committed.
 Otherwise, ask. Your human partner's preferences override both.
 
-**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `costly`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: costly|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
+**Model roles:** Read `~/.config/opencode/superb/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `costly`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: costly|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superb-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
 
 **Builder check** (for a project): dispatch a fresh subagent with
 `builder-check-prompt.md` in this directory. When you tell your human
@@ -275,7 +275,7 @@ that comes back through this gate.
 
 After the design doc is approved, ask one question with the question tool:
 
-- **Implement now** — invoke `superpowers:writing-plans` and continue.
+- **Implement now** — invoke `superb:writing-plans` and continue.
 - **File the spec as an issue** — write the design doc to the issue body, then stop.
 
 For the issue path:
@@ -284,7 +284,7 @@ For the issue path:
 - If the user has no issue, create a new issue.
 - Replace the issue body with the design doc.
 - Use the issue tracker available to you, such as the GitHub tools or `gh`.
-- Do not invoke `superpowers:writing-plans`.
+- Do not invoke `superb:writing-plans`.
 
 If no issue tracker is available, keep the local design doc, say so, and
 stop.

@@ -41,14 +41,14 @@ for (const rel of TEMPLATES) {
   }
 }
 
-const using = read('skills/using-superpowers/SKILL.md');
-check('using-superpowers exists', using !== null);
+const using = read('skills/using-superb/SKILL.md');
+check('using-superb exists', using !== null);
 if (using) {
-  check('using-superpowers has the Naming Subagents section',
+  check('using-superb has the Naming Subagents section',
     using.includes('## Naming Subagents'));
-  check('using-superpowers names the role-prefix format',
+  check('using-superb names the role-prefix format',
     using.includes('<Smart|Fast> agent — <task>'));
-  check('using-superpowers forbids a model ID in the description',
+  check('using-superb forbids a model ID in the description',
     /Do not put a model ID in the description/.test(using));
 }
 
@@ -60,7 +60,7 @@ const builder = read('skills/brainstorming/builder-check-prompt.md');
 check('builder-check names the Smart prefix',
   builder !== null && builder.includes('Smart agent — Builder check'));
 
-const diagnosing = read('skills/diagnosing-superpowers/SKILL.md');
+const diagnosing = read('skills/diagnosing-superb/SKILL.md');
 check('diagnosing names the Smart prefix',
   diagnosing !== null && diagnosing.includes('Smart agent — Diagnose'));
 

@@ -44,19 +44,19 @@ those, stop and ask.
 
 ## When to Use
 
-- You have a plan from superpowers:writing-plans and your human partner
+- You have a plan from superb:writing-plans and your human partner
   chose inline execution at the handoff.
 - Your harness has no subagent tool (see the per-platform references in
-  `../using-superpowers/references/`). Never fabricate a dispatch; run
+  `../using-superb/references/`). Never fabricate a dispatch; run
   the plan here.
 - Tasks are mostly independent — the same precondition as
-  superpowers:subagent-driven-development.
+  superb:subagent-driven-development.
 
 A fully specified plan makes inline execution transcription plus testing:
 it runs well on a mid-tier session model, and the final review runs on the
 smart chain, which this skill dispatches separately. Tell your human partner so when they choose inline.
 
-Prefer superpowers:subagent-driven-development when your human partner
+Prefer superb:subagent-driven-development when your human partner
 wants a review gate on every task, or when the plan is long enough that
 its later tasks would run on a compacted context. Inline execution over a
 long plan still works — the ledger is what makes it recoverable — but the
@@ -84,7 +84,7 @@ digraph process {
     "Final whole-branch review (fresh reviewer if you have one)" [shape=box];
     "Re-grade, then: Critical/Important → ONE fix pass, each fix RED→GREEN + green suite; Minor → ledger" [shape=box];
     "Final review clean: delete this plan's workspace" [shape=box];
-    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Use superb:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Setup: worktree, workspace + ledger, read plan + spec, pre-flight scan" -> "task-start: brief + BASE; read the brief";
     "task-start: brief + BASE; read the brief" -> "Work the steps in order: TDD, run every verification, read every output";
@@ -100,14 +100,14 @@ digraph process {
     "More tasks remain?" -> "Final whole-branch review (fresh reviewer if you have one)" [label="no"];
     "Final whole-branch review (fresh reviewer if you have one)" -> "Re-grade, then: Critical/Important → ONE fix pass, each fix RED→GREEN + green suite; Minor → ledger";
     "Re-grade, then: Critical/Important → ONE fix pass, each fix RED→GREEN + green suite; Minor → ledger" -> "Final review clean: delete this plan's workspace";
-    "Final review clean: delete this plan's workspace" -> "Use superpowers:finishing-a-development-branch";
+    "Final review clean: delete this plan's workspace" -> "Use superb:finishing-a-development-branch";
 }
 ```
 
 ## Setup
 
 Ensure the work happens in an isolated workspace: use
-superpowers:using-git-worktrees to create one or verify the existing one.
+superb:using-git-worktrees to create one or verify the existing one.
 Never start implementation on a main/master branch without your human
 partner's explicit consent.
 
@@ -117,14 +117,14 @@ failure as a controller re-dispatching them, paid for in your own context.
 Track progress in a ledger file, not only in todos. Harness todos are a
 live view; the ledger is the record.
 
-The workspace and ledger are shared with superpowers:subagent-driven-development
+The workspace and ledger are shared with superb:subagent-driven-development
 — same directory, same format — so a plan can change executors mid-flight
 and the new one resumes from the same ledger.
 
 - Each plan owns a workspace: at skill start, run
   `../subagent-driven-development/scripts/sdd-workspace PLAN_FILE` — it
   prints the plan's git-ignored directory
-  (`<repo-root>/.superpowers/sdd/<plan-basename>/`), home to every
+  (`<repo-root>/.superb/sdd/<plan-basename>/`), home to every
   artifact for THIS plan: ledger, briefs, review packages. Another plan's
   directory is never yours to read or write.
 - Check for this plan's ledger at `<workspace>/progress.md`. If its first
@@ -145,7 +145,7 @@ authority the plan argues from, and conflicts inside the plan resolve
 against it. A plan with no reachable spec gets a ledger note saying so —
 rulings made without one are provisional.
 
-**REQUIRED SUB-SKILL:** load superpowers:test-driven-development now,
+**REQUIRED SUB-SKILL:** load superb:test-driven-development now,
 before Task 1. It governs every step of every task below; a plan whose
 steps already say "write the failing test first" does not exempt you
 from reading it.
@@ -182,7 +182,7 @@ never in a call of its own.
 ### 2. Work the steps
 
 The plan's steps are already in RED-GREEN order; follow them in that
-order under superpowers:test-driven-development, loaded at setup. A test
+order under superb:test-driven-development, loaded at setup. A test
 step's code is written first and run first. Watching it fail is a step,
 not a formality — a test that passes before the implementation exists is
 a finding about the test.
@@ -191,7 +191,7 @@ Every step that runs a command has an `Expected:` line. Run the command,
 read its output, and compare. Three outcomes:
 
 - **Matches.** Next step.
-- **The code is wrong.** Use superpowers:systematic-debugging. Find the
+- **The code is wrong.** Use superb:systematic-debugging. Find the
   cause; never patch the symptom to make the step's output match.
 - **The plan is wrong** — a step contradicts the spec, an interface from an
   earlier task doesn't match what this task consumes, a command that
@@ -215,7 +215,7 @@ in this session — not inferred from the diff looking right:
 - Every `Expected:` line in the brief was compared against real output.
 - Every deviation from the brief has a `Ruling:` line in the ledger.
 
-**REQUIRED SUB-SKILL:** superpowers:verification-before-completion governs
+**REQUIRED SUB-SKILL:** superb:verification-before-completion governs
 the claim. If any item is missing, the task is not complete: finish it.
 
 ### 4. Complete the task
@@ -236,11 +236,11 @@ Run `../subagent-driven-development/scripts/review-package PLAN_FILE MERGE_BASE 
 (MERGE_BASE = the commit the branch started from, e.g.
 `git merge-base main HEAD`) and review from the file it prints.
 
-**Model roles:** Read `~/.config/opencode/superpowers/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `costly`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: costly|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superpowers-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
+**Model roles:** Read `~/.config/opencode/superb/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `costly`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: costly|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superb-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
 
 **With a subagent tool:** dispatch the reviewer on the smart chain — the
 whole-branch review is a judgment task — using
-superpowers:requesting-code-review's
+superb:requesting-code-review's
 [code-reviewer.md](../requesting-code-review/code-reviewer.md), with the
 package path, the plan and spec paths, the plan's Review Focus section
 verbatim if it has one (the input classes and failure modes the plan's
@@ -302,7 +302,7 @@ When the final review is clean and its fixes are committed, delete this
 plan's workspace directory — the git history is the record now. Sibling
 directories belong to other plans; leave them alone.
 
-Use superpowers:finishing-a-development-branch. Do not push, open a pull
+Use superb:finishing-a-development-branch. Do not push, open a pull
 request, or merge from this flow directly — its four-option menu is the gate,
 and its answer decides what happens.
 

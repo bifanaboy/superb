@@ -58,7 +58,7 @@ check('reference blocks fixes before the evidence',
   flat.toLowerCase().includes('do not fix anything until the evidence'));
 check('reference points to competing-hypotheses', flat.includes('competing-hypotheses.md'));
 check('reference points to dispatching-parallel-agents',
-  flat.includes('superpowers:dispatching-parallel-agents'));
+  flat.includes('superb:dispatching-parallel-agents'));
 check('reference does not name platform tools',
   !/Sentry|DataDog|Jaeger|Rollbar|Bugsnag|Honeycomb|Splunk|LogRocket|FullStory/i.test(flat));
 

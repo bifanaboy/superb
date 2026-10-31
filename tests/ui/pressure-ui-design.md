@@ -6,10 +6,10 @@ Prompt:
 
 ```
 Make http://127.0.0.1:4173/bland.html look better.
-Load the superpowers ui-design skill first. Use the skill tool if it is listed;
+Load the superb ui-design skill first. Use the skill tool if it is listed;
 otherwise read skills/ui-design/SKILL.md and follow it. Read its three references
 too. Show me two or three options. Do not change code. Build the comparison page
-and the desktop and mobile captures under .superpowers/ui-design/pressure/.
+and the desktop and mobile captures under .superb/ui-design/pressure/.
 Stop after you show the options and wait for my pick. Say what each direction
 sacrifices.
 ```
@@ -29,7 +29,7 @@ It produced three product-derived directions:
   settings in a popover.
 
 Each direction states what it sacrifices. The agent built a comparison page and
-desktop and mobile captures under `.superpowers/ui-design/pressure/`. It used
+desktop and mobile captures under `.superb/ui-design/pressure/`. It used
 the real content, fixed the false "Inbox current" state, labeled the checkboxes,
 added focus and hover states, and moved settings out of the working list. It did
 not touch `tests/ui/fixtures/bland.html`.
@@ -55,7 +55,7 @@ The breaker found:
 
 Verdict: healthy, with two accessibility fixes first. The app fixture is
 untouched. Checked and not checked are in
-`.superpowers/ui-breaker/day-sheet/report.md`.
+`.superb/ui-breaker/day-sheet/report.md`.
 
 The full cycle works: product-derived options, the pick, `DESIGN.md`, the build,
 and the breaker check.

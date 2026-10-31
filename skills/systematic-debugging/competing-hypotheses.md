@@ -66,5 +66,5 @@ is understood.
 ## Parallel investigation
 
 If the harness has subagents, assign one hypothesis per investigator. Use
-`superpowers:dispatching-parallel-agents`. Require each investigator to cite
+`superb:dispatching-parallel-agents`. Require each investigator to cite
 evidence in the format above.

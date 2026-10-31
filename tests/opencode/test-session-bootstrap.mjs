@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url';
 const [, , inputPath] = process.argv;
 assert.ok(inputPath, 'pass the plugin module path');
 const pluginURL = pathToFileURL(fs.realpathSync(inputPath));
-const marker = '<EXTREMELY_IMPORTANT>\nYou have superpowers.';
+const marker = '<EXTREMELY_IMPORTANT>\nYou have Superb.';
 let generation = 0;
 
 function makeEvent(sessionID) {

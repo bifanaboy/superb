@@ -59,6 +59,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-observability-evidence.sh  Verify the observability-evidence reference"
             echo "  test-dispatch-write-surface.sh  Verify the parallel-dispatch write-surface contract"
             echo "  test-ui-skills.sh       Verify the UI skills, references and fixtures"
+            echo "  test-rename-complete.sh Verify the old plugin name is gone"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -89,6 +90,7 @@ tests=(
     "test-observability-evidence.sh"
     "test-dispatch-write-surface.sh"
     "test-ui-skills.sh"
+    "test-rename-complete.sh"
 )
 
 # Integration tests (require OpenCode)

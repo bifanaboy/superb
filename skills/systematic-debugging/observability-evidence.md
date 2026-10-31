@@ -67,6 +67,6 @@ The evidence points at one component → return to Phase 1 step 5 and trace the 
 
 More than one cause is plausible → arbitrate with `competing-hypotheses.md`.
 
-Several independent signals need checking → dispatch parallel investigators with `superpowers:dispatching-parallel-agents`.
+Several independent signals need checking → dispatch parallel investigators with `superb:dispatching-parallel-agents`.
 
 Do not fix anything until the evidence shows where the failure starts.

@@ -1,7 +1,7 @@
 .worktrees/
 .private-journal/
 .claude/
-.superpowers/
+.superb/
 .playwright-mcp/
 .DS_Store
 node_modules/
@@ -19,4 +19,4 @@ __pycache__/
 *.pyo
 .pytest_cache/
 
-.opencode/plugins/superpowers.js
+.opencode/plugins/superb.js

@@ -1,8 +1,8 @@
-# Superpowers
+# Superb
 
 Your coding agent should ask before it builds, plan before it codes, and review before it ships.
 
-Superpowers is a personal OpenCode 2 build of the Superpowers workflow: a set of skills plus a small bootstrap plugin. It turns a vague request into a design, a plan, tested code, a review, and a finished branch.
+Superb is a personal OpenCode 2 build of a skills-first agent workflow: a set of skills plus a small bootstrap plugin. It turns a vague request into a design, a plan, tested code, a review, and a finished branch.
 
 ## What you get
 
@@ -20,10 +20,10 @@ Superpowers is a personal OpenCode 2 build of the Superpowers workflow: a set of
 OpenCode 2.0.4 or later is required.
 
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/bifanaboy/superpowers/refs/heads/main/.opencode/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/bifanaboy/superb/refs/heads/main/.opencode/INSTALL.md
 ```
 
-Restart OpenCode. Then ask "Tell me about your superpowers" to verify.
+Restart OpenCode. Then ask "Tell me about Superb" to verify.
 
 ### Browser setup for the UI skills
 
@@ -57,10 +57,10 @@ The agent asks what you want, offers approaches, and writes a design. You approv
 
 Every subagent gets a role. **Fast** is for transcription or one or two files with a clear spec. **Smart** is for reviews, architecture, and debugging. Each role has a costly, a cheap, and a free model.
 
-Set the models once with `@choosing-superpowers-models`, or by asking in plain words. The config lives at:
+Set the models once with `@choosing-superb-models`, or by asking in plain words. The config lives at:
 
 ```
-~/.config/opencode/superpowers/models.json
+~/.config/opencode/superb/models.json
 ```
 
 A model that fails a subagent dispatch is skipped for the rest of the session.
@@ -69,12 +69,12 @@ A model that fails a subagent dispatch is skipped for the rest of the session.
 
 After you approve the design, autonomous mode runs the workflow on its own. It records each open choice as a ruling and stops only for destructive or security-sensitive actions.
 
-See [the design](docs/superpowers/specs/2026-10-30-autonomous-mode-design.md).
+See [the design](docs/superb/specs/2026-10-30-autonomous-mode-design.md).
 
 ## Learn more
 
-- [Grilling phase design](docs/superpowers/specs/2026-10-31-grilling-phase-design.md)
-- [Model roles design](docs/superpowers/specs/2026-10-31-superpowers-model-tiers-design.md)
+- [Grilling phase design](docs/superb/specs/2026-10-31-grilling-phase-design.md)
+- [Model roles design](docs/superb/specs/2026-10-31-superb-model-tiers-design.md)
 - [Install instructions](.opencode/INSTALL.md)
 
 ## License

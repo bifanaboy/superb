@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=== Test: Dead Model Tracking ==="
 
-node "$SCRIPT_DIR/test-dead-models.mjs" "$SCRIPT_DIR/../../.opencode/plugins/superpowers.js"
+node "$SCRIPT_DIR/test-dead-models.mjs" "$SCRIPT_DIR/../../.opencode/plugins/superb.js"
 
 echo "  [PASS] failed models are skipped for the session"
 echo ""
