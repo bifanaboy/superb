@@ -166,7 +166,7 @@ async function makeHarness({ parentID, options } = {}) {
   assert.equal((await h.evaluate('edit')).effect, 'deny', 'the clamped block lands at five calls');
 }
 
-// A V1-shaped or empty ctx must not throw out of setup().
+// A malformed or empty ctx must not throw out of setup().
 {
   const mod = await import(`${pluginURL.href}?todo-test=${++generation}`);
   await assert.doesNotReject(() => mod.default.setup(undefined), 'setup(undefined) must not throw');
