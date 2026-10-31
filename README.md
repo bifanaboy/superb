@@ -27,7 +27,7 @@ Restart OpenCode. Then ask "Tell me about Superb" to verify.
 
 ### Browser setup for the UI skills
 
-The UI skills use the browser tool from your harness. On the OpenCode desktop
+The UI skills use OpenCode's browser tool. On the OpenCode desktop
 app, the built-in `browser` namespace is enough. On the TUI or CLI, add a
 browser MCP such as the Playwright MCP.
 
