@@ -12,6 +12,16 @@ Fetch and follow instructions from https://raw.githubusercontent.com/bifanaboy/s
 
 Skills live in `skills/`. Bootstrap is `.opencode/plugins/superpowers.js`.
 
+## Model roles
+
+Superpowers gives every subagent a role: **fast** for transcription, or a
+**smart** role for judgment work. Each role has a paid, a cheap, and a free
+model. Set them once by saying "let's set up my superpowers models". The
+config lives at `~/.config/opencode/superpowers/models.json`. If a model
+fails, the next slot is tried. You only hear about it when all three fail.
+
+See `docs/superpowers/specs/2026-10-31-superpowers-model-tiers-design.md`.
+
 ## Autonomous mode
 
 After you approve a finalized design in brainstorming, the agent runs the full workflow on its own: git worktree setup, planning, implementation (TDD), code review, and finishing. It decides open choices itself and records each as a `Ruling: [tag] ...` line. It stops only for destructive or security-sensitive actions.
