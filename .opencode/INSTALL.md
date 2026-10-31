@@ -26,6 +26,44 @@ Verify by asking: "Tell me about your superpowers"
 OpenCode uses its own plugin install. If you also use Claude Code, Codex, or
 another harness, install Superpowers separately for each one.
 
+## Browser setup for the UI skills
+
+The UI skills need a browser tool. The plugin does not ship one.
+
+- **OpenCode desktop app:** the built-in `browser` namespace is available. No
+  extra setup.
+- **TUI or CLI:** add a browser MCP. The Playwright MCP is the tested backend.
+
+Merge this into the existing `mcp.servers` object in
+`~/.config/opencode/opencode.json`:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "-y", "@playwright/mcp@latest", "--headless"],
+        "codemode": false
+      }
+    }
+  }
+}
+```
+
+Check the connection:
+
+```bash
+opencode mcp list
+```
+
+If the browser cannot launch, install Chrome for Testing with
+`npx playwright install chrome`, or point the server at an installed Chromium
+with `--executable-path <path>`.
+
+Without a browser tool, `ui-breaker` stops and reports the blocker. `ui-design`
+can still design, but it cannot capture or verify the result.
+
 ## Migrating from the old symlink-based install
 
 If you previously installed superpowers using `git clone` and symlinks, remove the old setup:

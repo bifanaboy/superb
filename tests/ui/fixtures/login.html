@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; color: #222; background: #f5f5f5; }
+  main { max-width: 360px; margin: 80px auto; padding: 24px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+  h1 { margin-top: 0; font-size: 20px; }
+  label { display: block; margin-top: 16px; font-size: 14px; }
+  input { width: 100%; margin-top: 4px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+  button { margin-top: 20px; padding: 8px 14px; border: 0; border-radius: 4px; background: #111; color: #fff; }
+</style>
+</head>
+<body>
+  <main>
+    <h1>Sign in</h1>
+    <form method="post" action="/login">
+      <label for="user">Email</label>
+      <input id="user" name="user" type="email" autocomplete="username">
+      <label for="pass">Password</label>
+      <input id="pass" name="pass" type="password" autocomplete="current-password">
+      <button type="submit">Sign in</button>
+    </form>
+  </main>
+</body>
+</html>

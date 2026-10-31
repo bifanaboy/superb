@@ -11,6 +11,7 @@ Superpowers is a personal OpenCode 2 build of the Superpowers workflow: a set of
 - **Subagent execution** with fast and smart model roles, or native execution in one session.
 - **Test-driven development** on every task.
 - **Code review** before the work is merged.
+- **UI breaker and design.** The `ui-breaker` and `ui-design` skills find what is wrong in a running web UI, then fix it with a product-derived direction.
 - **A finish menu** that asks before it pushes, opens a pull request, or merges.
 - **Autonomous mode** that runs the workflow after you approve the design.
 
@@ -23,6 +24,16 @@ Fetch and follow instructions from https://raw.githubusercontent.com/bifanaboy/s
 ```
 
 Restart OpenCode. Then ask "Tell me about your superpowers" to verify.
+
+### Browser setup for the UI skills
+
+The UI skills use the browser tool from your harness. On the OpenCode desktop
+app, the built-in `browser` namespace is enough. On the TUI or CLI, add a
+browser MCP such as the Playwright MCP.
+
+Without a browser tool, `ui-breaker` stops and reports the blocker. It does not
+guess. See [Install instructions](.opencode/INSTALL.md#browser-setup-for-the-ui-skills)
+for the config.
 
 ## Quick start
 
