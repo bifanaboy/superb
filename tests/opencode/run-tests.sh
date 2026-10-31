@@ -53,6 +53,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-question-tool.sh   Verify fixed-choice questions use the question tool"
             echo "  test-subagent-naming.sh Verify subagent names carry the model role"
             echo "  test-ste100.sh          Verify root prose uses Simplified Technical English"
+            echo "  test-dead-models.sh     Verify a failed model is skipped for the session"
             echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
@@ -77,6 +78,7 @@ tests=(
     "test-question-tool.sh"
     "test-subagent-naming.sh"
     "test-ste100.sh"
+    "test-dead-models.sh"
 )
 
 # Integration tests (require OpenCode)
