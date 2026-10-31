@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tasks</title>
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    color: #222;
+    background: #fff;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #ddd;
+  }
+  header h1 { margin: 0; font-size: 18px; }
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 57px); }
+  nav { padding: 24px; border-right: 1px solid #ddd; }
+  nav a { display: block; padding: 8px 0; color: #222; text-decoration: none; }
+  nav a[aria-current="page"] { font-weight: 600; }
+  main { padding: 24px 32px; }
+  h2 { margin-top: 0; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #eee; }
+  li input { margin-top: 4px; }
+  .meta { color: #666; font-size: 13px; }
+  .panel { margin-top: 32px; padding: 16px; border: 1px solid #ddd; border-radius: 8px; }
+  .panel h3 { margin-top: 0; }
+  label { display: block; margin-top: 12px; font-size: 14px; }
+  input[type="text"], select { margin-top: 4px; padding: 8px; width: 100%; max-width: 320px; border: 1px solid #ccc; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Tasks</h1>
+    <span class="meta">Maya</span>
+  </header>
+  <div class="layout">
+    <nav aria-label="Views">
+      <a href="/today" aria-current="page">Inbox</a>
+      <a href="/today">Today</a>
+      <a href="/upcoming">Upcoming</a>
+      <a href="/settings">Settings</a>
+    </nav>
+    <main>
+      <h2>Today</h2>
+      <p class="meta">4 tasks, 1 due soon.</p>
+      <ul>
+        <li><input type="checkbox"><div><strong>Review the Q4 budget</strong><div class="meta">Due at 14:00</div></div></li>
+        <li><input type="checkbox"><div><strong>Reply to the design review</strong><div class="meta">No due time</div></div></li>
+        <li><input type="checkbox"><div><strong>Book the dentist</strong><div class="meta">Due tomorrow</div></div></li>
+        <li><input type="checkbox"><div><strong>Draft the launch note</strong><div class="meta">No due time</div></div></li>
+      </ul>
+
+      <section class="panel" aria-labelledby="settings-title">
+        <h3 id="settings-title">Settings</h3>
+        <label for="week-start">Week starts on</label>
+        <select id="week-start"><option>Monday</option><option>Sunday</option></select>
+        <label for="display-name">Display name</label>
+        <input id="display-name" type="text" value="Maya">
+      </section>
+    </main>
+  </div>
+</body>
+</html>

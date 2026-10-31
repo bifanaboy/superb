@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taskboard</title>
+<style>
+  :root {
+    --ink: #161616;
+    --muted: #b9b9b9;
+    --paper: #f4f4f4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  .hero {
+    padding: 72px 32px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    text-align: center;
+  }
+  .hero h1 {
+    margin: 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 72px;
+    line-height: 0.95;
+  }
+  .hero p { font-size: 18px; opacity: 0.8; }
+  .logo-wall {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    padding: 24px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+  .shell { max-width: 1100px; margin: 0 auto; padding: 32px; }
+  .topbar { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; }
+  .menu {
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  .search { display: flex; gap: 8px; }
+  .search input { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px; }
+  .search button { padding: 0; border: 1px solid #111; background: #111; color: white; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card {
+    padding: 24px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+  .icon-tile {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    font-size: 24px;
+  }
+  .quiet-label { color: var(--muted); font-size: 10px; }
+  .danger { margin-top: 32px; padding: 8px 12px; border: 1px solid #dc2626; color: #dc2626; background: white; border-radius: 8px; }
+  .wide { width: 900px; height: 40px; background: #e5e7eb; }
+</style>
+</head>
+<body>
+  <section class="hero" data-defect="fit">
+    <h1>Work, reimagined.</h1>
+    <p>The calm taskboard for teams who ship.</p>
+  </section>
+
+  <div class="logo-wall" data-defect="fit">
+    <span>Acme</span><span>Globex</span><span>Initech</span><span>Umbrella</span>
+  </div>
+
+  <main class="shell">
+    <div class="topbar">
+      <button class="menu" data-defect="flow" data-flow="menu">Menu</button>
+      <form class="search" data-defect="flow" data-flow="search" method="get" action="/search">
+        <input name="q" placeholder="Search tasks">
+        <button type="submit">Go</button>
+      </form>
+    </div>
+
+    <h2>Today</h2>
+    <p class="quiet-label" data-defect="craft">Updated 2 minutes ago</p>
+
+    <div class="cards">
+      <article class="card" data-defect="fit">
+        <div class="icon-tile">01</div>
+        <h3>Plan</h3>
+        <p>Keep the team aligned.</p>
+      </article>
+      <article class="card" data-defect="fit">
+        <div class="icon-tile">02</div>
+        <h3>Track</h3>
+        <p>See every task in one place.</p>
+      </article>
+      <article class="card" data-defect="fit">
+        <div class="icon-tile">03</div>
+        <h3>Ship</h3>
+        <p>Move work over the line.</p>
+      </article>
+    </div>
+
+    <h2>Team</h2>
+    <img src="/missing.png" alt="The team at work" width="320" height="180" data-defect="craft">
+
+    <p class="quiet-label" data-defect="craft">The following area is wider than a phone screen.</p>
+    <div class="wide" data-defect="craft"></div>
+
+    <button class="danger" data-write-action>Delete account</button>
+  </main>
+
+<script>
+  document.querySelector('[data-flow="search"]').addEventListener('submit', (event) => {
+    event.preventDefault();
+    throw new Error('Search failed: planted flow defect');
+  });
+  document.querySelector('[data-write-action]').addEventListener('click', () => {
+    fetch('/delete', { method: 'POST' });
+  });
+</script>
+</body>
+</html>
