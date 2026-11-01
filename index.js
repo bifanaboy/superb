@@ -6,4 +6,4 @@
 // resolve via package.json `main`; this file only serves the directory form,
 // an absolute path such as `"plugins": ["/path/to/superb"]` (`~` is not
 // expanded).
-export { default } from "./.opencode/plugins/superb.js";
+export { default } from "./src/superb.js";

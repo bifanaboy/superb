@@ -15,13 +15,13 @@ export OPENCODE_CONFIG_DIR="$TEST_HOME/.config/opencode"
 
 # Standard install layout:
 #   $OPENCODE_CONFIG_DIR/superb/             ← package root
-#   $OPENCODE_CONFIG_DIR/superb/skills/      ← skills dir (../../skills from plugin)
-#   $OPENCODE_CONFIG_DIR/superb/.opencode/plugins/superb.js ← plugin file
+#   $OPENCODE_CONFIG_DIR/superb/skills/      ← skills dir (../skills from plugin)
+#   $OPENCODE_CONFIG_DIR/superb/src/superb.js ← plugin file
 #   $OPENCODE_CONFIG_DIR/plugins/superb.js   ← symlink OpenCode reads
 
 SUPERB_DIR="$OPENCODE_CONFIG_DIR/superb"
 SUPERB_SKILLS_DIR="$SUPERB_DIR/skills"
-SUPERB_PLUGIN_FILE="$SUPERB_DIR/.opencode/plugins/superb.js"
+SUPERB_PLUGIN_FILE="$SUPERB_DIR/src/superb.js"
 
 # Install skills
 mkdir -p "$SUPERB_DIR"
@@ -29,7 +29,7 @@ cp -r "$REPO_ROOT/skills" "$SUPERB_DIR/"
 
 # Install plugin
 mkdir -p "$(dirname "$SUPERB_PLUGIN_FILE")"
-cp "$REPO_ROOT/.opencode/plugins/superb.js" "$SUPERB_PLUGIN_FILE"
+cp "$REPO_ROOT/src/superb.js" "$SUPERB_PLUGIN_FILE"
 
 # Register plugin via symlink (what OpenCode actually reads)
 mkdir -p "$OPENCODE_CONFIG_DIR/plugins"

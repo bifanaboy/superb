@@ -25,6 +25,25 @@ Verify by asking: "Tell me about Superb"
 
 OpenCode uses its own plugin install. Superb targets OpenCode 2 only.
 
+## Local development
+
+The repository does not auto-load its own plugin. OpenCode only discovers
+plugins under `.opencode/plugins/` and `.opencode/plugin/`, and the package
+entrypoint lives in `src/`.
+
+To test the working tree, disable the installed copy and load the checkout.
+Merge this into `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "plugins": ["-superb", "/absolute/path/to/superb"]
+}
+```
+
+The first entry disables the installed `superb` plugin by ID. The second
+loads the checkout through its `index.js`. Remove the entries to return to
+the installed copy.
+
 ## Browser setup for the UI skills
 
 The UI skills need a browser tool. The plugin does not ship one.
