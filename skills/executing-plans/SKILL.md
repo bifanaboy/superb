@@ -53,7 +53,6 @@ those, stop and ask.
 
 A fully specified plan makes inline execution transcription plus testing:
 it runs well on a mid-tier session model, and the final review runs on the
-smart chain, which this skill dispatches separately. Tell your human partner so when they choose inline.
 
 Prefer superb:subagent-driven-development when your human partner
 wants a review gate on every task, or when the plan is long enough that
@@ -235,9 +234,6 @@ Run `../subagent-driven-development/scripts/review-package PLAN_FILE MERGE_BASE 
 (MERGE_BASE = the commit the branch started from, e.g.
 `git merge-base main HEAD`) and review from the file it prints.
 
-**Model roles:** Read `~/.config/opencode/superb/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `costly`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: costly|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superb-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
-
-**With a subagent tool:** dispatch the reviewer on the smart chain — the
 whole-branch review is a judgment task — using
 superb:requesting-code-review's
 [code-reviewer.md](../requesting-code-review/code-reviewer.md), with the
@@ -246,7 +242,6 @@ verbatim if it has one (the input classes and failure modes the plan's
 tests do not exercise — the reviewer checks each deliberately), and a
 pointer to the ledger's `Ruling:` lines so it can weigh the calls you
 made. Specify the model
-explicitly from the smart chain; an omitted model inherits the session's
 model, which may not be the one you chose. This is the one fresh context the whole run buys. Do not
 skip it, and do not replace it with your own read of the diff.
 
@@ -321,3 +316,5 @@ and its answer decides what happens.
 | "The reviewer said Minor, so it's Minor" | The label graded the spec's silence. Grade what the person gets. Re-grade, then gate. |
 | "The fix is obvious, no need for a failing test first" | The failing test is the only proof the finding was real and is now gone. Without it you have a diff and a hope. |
 | "I'll fix the minors too while I'm in there" | Every minor you fix is a test, a fix, and a suite run your partner did not ask for. Ledger them; your partner decides. |
+
+Do not choose or pass a model. Dispatch every subagent without `model`.

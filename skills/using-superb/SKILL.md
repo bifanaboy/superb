@@ -37,7 +37,7 @@ present the same options as prose and wait.
 
 ## Naming Subagents
 
-Name every subagent `<Smart|Fast> agent — <task>`, using the model role you chose. The harness appends the model. Do not put a model ID in the description.
+Name every subagent for its task. Do not put a model ID in the description.
 
 ## Writing to Your Human Partner
 

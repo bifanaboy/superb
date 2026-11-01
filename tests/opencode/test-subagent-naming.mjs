@@ -46,8 +46,8 @@ check('using-superb exists', using !== null);
 if (using) {
   check('using-superb has the Naming Subagents section',
     using.includes('## Naming Subagents'));
-  check('using-superb names the role-prefix format',
-    using.includes('<Smart|Fast> agent — <task>'));
+  check('using-superb names the task-only format',
+    using.includes('Name every subagent for its task'));
   check('using-superb forbids a model ID in the description',
     /Do not put a model ID in the description/.test(using));
 }
