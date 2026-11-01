@@ -6,12 +6,7 @@ Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skill
 
 Most of the skills are adapted from [Superpowers](https://github.com/obra/superpowers) by Jesse Vincent, under the MIT license. `LICENSE` keeps his copyright.
 
-You also get:
-
-- **A grilling phase.** After you pick an approach, the agent asks numbered rounds of questions, each with a recommended answer, until no open point is left.
-- **UI review and design.** `ui-breaker` finds what is wrong in your running web UI. `ui-design` fixes it with a product-derived direction.
-- **Model roles.** Each subagent gets a fast or a smart role. Each role has a costly, a cheap, and a free model. A model that fails a dispatch is skipped for the rest of the session.
-- **Plain-English output.** The agent writes all prose to you in ASD-STE100 Simplified Technical English.
+Superb's own additions are listed under [What you get](#what-you-get).
 
 ## What you get
 
