@@ -1,19 +1,30 @@
 # Superb
 
-Your coding agent should ask before it builds, plan before it codes, and review before it ships.
+Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a small bootstrap plugin. It builds on the Superpowers skills and adds a grilling phase, UI review and design skills, model roles, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
 
-Superb is a personal OpenCode 2 build of a skills-first agent workflow: a set of skills plus a small bootstrap plugin. It turns a vague request into a design, a plan, tested code, a review, and a finished branch.
+## Built on Superpowers
+
+Most of the skills are adapted from [Superpowers](https://github.com/obra/superpowers) by Jesse Vincent, under the MIT license. `LICENSE` keeps his copyright.
+
+You also get:
+
+- **A grilling phase.** After you pick an approach, the agent asks numbered rounds of questions, each with a recommended answer, until no open point is left.
+- **UI review and design.** The `ui-breaker` and `ui-design` skills find what is wrong in your running web UI, then fix it with a product-derived direction.
+- **Model roles.** Each subagent gets a fast or a smart role. Each role has a costly, a cheap, and a free model. A model that fails a dispatch is skipped for the rest of the session.
+- **Plain-English output.** The agent writes all prose to you in ASD-STE100 Simplified Technical English.
 
 ## What you get
 
-- **Brainstorming** that asks what you want, then grills the chosen design until the spec is complete.
+- **A grilling phase** with numbered rounds, each question with a recommended answer.
+- **UI breaker and design.** The `ui-breaker` and `ui-design` skills find what is wrong in your running web UI, then fix it with a product-derived direction.
+- **Model roles.** A fast and a smart role, each with a costly, a cheap, and a free model.
+- **Plain-English output** in ASD-STE100 Simplified Technical English.
+- **Brainstorming** that asks what you want before it proposes approaches.
 - **Plans** with exact files, steps, and tests.
-- **Subagent execution** with fast and smart model roles, or native execution in one session.
+- **Subagent execution** with a fresh implementer and reviewer per task, or native execution in one session.
 - **Test-driven development** on every task.
 - **Code review** before the work is merged.
-- **UI breaker and design.** The `ui-breaker` and `ui-design` skills find what is wrong in a running web UI, then fix it with a product-derived direction.
 - **A finish menu** that asks before it pushes, opens a pull request, or merges.
-- **Autonomous mode** that runs the workflow after you approve the design.
 
 ## Install
 
@@ -64,12 +75,6 @@ Set the models once with `@choosing-superb-models`, or by asking in plain words.
 ```
 
 A model that fails a subagent dispatch is skipped for the rest of the session.
-
-## Autonomous mode
-
-After you approve the design, autonomous mode runs the workflow on its own. It records each open choice as a ruling and stops only for destructive or security-sensitive actions.
-
-See [the design](docs/superb/specs/2026-10-30-autonomous-mode-design.md).
 
 ## Learn more
 
