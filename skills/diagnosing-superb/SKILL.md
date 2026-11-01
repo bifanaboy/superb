@@ -41,7 +41,7 @@ Create a todo per step. Steps 5–7 run only on their stated condition.
    `quality-evidence.md`, `request-conflicts.md`, `cost-and-time.md`.
    Split a dimension by turn range when the transcript is long. Discard
    any returned finding without `path:line`. Use the description
-   `Smart agent — Diagnose: [dimension]` for analyst dispatches.
+   `Diagnose: [dimension]` for analyst dispatches.
 4. **Report.** Fill every section of `templates/report.md` in order, write
    it to the workspace, show it, and give the path. Check what cited content
    actually proves and preserve the supporting case; a symlink alias is not a

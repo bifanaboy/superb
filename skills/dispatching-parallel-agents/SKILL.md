@@ -72,7 +72,7 @@ Each agent gets:
 - **Constraints:** Don't change other code
 - **Expected output:** Summary of what you found and fixed
 
-Name each subagent `<Role> agent — <task>`, using the role you dispatched.
+Name each subagent for its task.
 
 ### 4. Dispatch in Parallel
 

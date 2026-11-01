@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const banned = ['models.json', 'costly', 'MODEL SKIP', 'smart chain', '@choosing-superb-models', 'fast.costly', 'smart.costly', 'Model roles:', 'Model selection:'];
+const banned = ['models.json', 'costly', 'MODEL SKIP', 'smart chain', '@choosing-superb-models', 'fast.costly', 'smart.costly', 'Model roles:', 'Model selection:', 'Smart agent —', 'Fast agent —', '<Role> agent —', 'role you dispatched', 'role you chose', 'Use the fast role'];
 const offenders = [];
 
 for (const rel of ['skills', 'src']) {

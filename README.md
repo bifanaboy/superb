@@ -1,6 +1,6 @@
 # Superb
 
-Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a bootstrap plugin. It adds a grilling phase, UI review and design skills, model roles, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
+Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a bootstrap plugin. It adds a grilling phase, UI review and design skills, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
 
 ## Credits
 
