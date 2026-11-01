@@ -12,7 +12,6 @@ Superb's own additions are listed under [What you get](#what-you-get).
 
 - **A grilling phase** with numbered rounds, each question with a recommended answer.
 - **UI breaker and design.** `ui-breaker` finds what is wrong in your running web UI. `ui-design` fixes it with a product-derived direction.
-- **Model roles.** A fast and a smart role, each with a costly, a cheap, and a free model.
 - **Plain-English output** in ASD-STE100 Simplified Technical English.
 - **Brainstorming** that asks what you want before it proposes approaches.
 - **Plans** with exact files, steps, and tests.
@@ -59,22 +58,13 @@ The agent asks what you want, offers approaches, and writes a design. You approv
 4. **Review.** A fresh reviewer checks the whole branch.
 5. **Finish.** The finish menu asks before it pushes, opens a pull request, or merges.
 
-## Model roles
+## Models
 
-Every subagent gets a role. **Fast** is for transcription or one or two files with a clear spec. **Smart** is for reviews, architecture, and debugging. Each role has a costly, a cheap, and a free model.
-
-Set the models once with `@choosing-superb-models`, or by asking in plain words. The config lives at:
-
-```
-~/.config/opencode/superb/models.json
-```
-
-A model that fails a subagent dispatch is skipped for the rest of the session.
+Superb does not choose models. Subagents inherit the host model, or the model set by an installed routing plugin.
 
 ## Learn more
 
 - [Grilling phase design](docs/superb/specs/2026-10-31-grilling-phase-design.md)
-- [Model roles design](docs/superb/specs/2026-10-31-superb-model-tiers-design.md)
 - [Install instructions](.opencode/INSTALL.md)
 
 ## License

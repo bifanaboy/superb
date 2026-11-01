@@ -94,11 +94,9 @@ If you installed an earlier version under its previous name, do these steps:
    folder that is not `superb`.
 4. Optionally remove the old package folder under `~/.config/opencode/`. It is
    the folder that is not `superb`.
-5. Move `models.json` from the old config folder to
-   `~/.config/opencode/superb/models.json`.
-6. Replace the old plugin entry in `opencode.json` with
+5. Replace the old plugin entry in `opencode.json` with
    `superb@git+https://github.com/bifanaboy/superb.git`.
-7. Remove any `skills.paths` entry for the old name from `opencode.json`.
+6. Remove any `skills.paths` entry for the old name from `opencode.json`.
 
 Then follow the installation steps above.
 

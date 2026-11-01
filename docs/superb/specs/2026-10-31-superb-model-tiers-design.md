@@ -1,5 +1,7 @@
 # Fast and smart model tiers for superb
 
+> Superseded. Superb no longer owns model selection.
+
 ## Intent
 
 The root agent picks a role for each subagent and tries three models in order for that role. The user sees nothing unless all three fail. The user sets the six model IDs once. This removes guesswork about which model suits which task.
