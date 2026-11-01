@@ -13,7 +13,7 @@ names='Claude Code|Codex|Gemini CLI|Copilot CLI|Cursor|Antigravity|Hermes Agent|
 paths='CLAUDE\.md|CLAUDE_MD_TESTING|GEMINI\.md|~/\.claude|~/\.codex|~/\.gemini|CODEX_CI|\.codex-plugin|codex-tools\.md|gemini-tools\.md|EnterWorktree'
 
 set +e
-matches=$(git grep -I -n -E "$names|$paths" -- README.md .opencode skills index.js package.json)
+matches=$(git grep -I -n -E "$names|$paths" -- README.md .opencode skills src index.js package.json)
 code=$?
 set -e
 
