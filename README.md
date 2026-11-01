@@ -1,6 +1,6 @@
 # Superb
 
-Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a small bootstrap plugin. It builds on the Superpowers skills and adds a grilling phase, UI review and design skills, model roles, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
+Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a bootstrap plugin. It builds on the Superpowers skills and adds a grilling phase, UI review and design skills, model roles, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
 
 ## Built on Superpowers
 
@@ -9,14 +9,14 @@ Most of the skills are adapted from [Superpowers](https://github.com/obra/superp
 You also get:
 
 - **A grilling phase.** After you pick an approach, the agent asks numbered rounds of questions, each with a recommended answer, until no open point is left.
-- **UI review and design.** The `ui-breaker` and `ui-design` skills find what is wrong in your running web UI, then fix it with a product-derived direction.
+- **UI review and design.** `ui-breaker` finds what is wrong in your running web UI. `ui-design` fixes it with a product-derived direction.
 - **Model roles.** Each subagent gets a fast or a smart role. Each role has a costly, a cheap, and a free model. A model that fails a dispatch is skipped for the rest of the session.
 - **Plain-English output.** The agent writes all prose to you in ASD-STE100 Simplified Technical English.
 
 ## What you get
 
 - **A grilling phase** with numbered rounds, each question with a recommended answer.
-- **UI breaker and design.** The `ui-breaker` and `ui-design` skills find what is wrong in your running web UI, then fix it with a product-derived direction.
+- **UI breaker and design.** `ui-breaker` finds what is wrong in your running web UI. `ui-design` fixes it with a product-derived direction.
 - **Model roles.** A fast and a smart role, each with a costly, a cheap, and a free model.
 - **Plain-English output** in ASD-STE100 Simplified Technical English.
 - **Brainstorming** that asks what you want before it proposes approaches.
