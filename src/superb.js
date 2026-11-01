@@ -18,7 +18,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Skills directory registered by setup() via ctx.skill.transform
-const superbSkillsDir = path.resolve(__dirname, '../../skills');
+const superbSkillsDir = path.resolve(__dirname, '../skills');
 
 // Simple frontmatter extraction (avoid dependency on skills-core for
 // bootstrap). Handles plain `key: value` lines, quoted values (including

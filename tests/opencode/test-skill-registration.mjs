@@ -20,7 +20,7 @@ if (!inputPath) {
 }
 
 const pluginPath = fs.realpathSync(inputPath);
-const skillsDir = path.resolve(path.dirname(pluginPath), '../../skills');
+const skillsDir = path.resolve(path.dirname(pluginPath), '../skills');
 const mod = await import(pathToFileURL(pluginPath).href);
 
 const failures = [];
@@ -143,7 +143,7 @@ const frontmatterFixtures = {
 };
 const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'superb-frontmatter-'));
 try {
-  const fixturePlugin = path.join(fixtureRoot, '.opencode', 'plugins', 'superb.js');
+  const fixturePlugin = path.join(fixtureRoot, 'src', 'superb.js');
   fs.mkdirSync(path.dirname(fixturePlugin), { recursive: true });
   fs.copyFileSync(pluginPath, fixturePlugin);
   for (const [id, { frontmatter }] of Object.entries(frontmatterFixtures)) {

@@ -1,10 +1,10 @@
 # Superb
 
-Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a bootstrap plugin. It builds on the Superpowers skills and adds a grilling phase, UI review and design skills, model roles, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
+Superb is an opinionated OpenCode 2 workflow. It gives your agent a set of skills and a bootstrap plugin. It adds a grilling phase, UI review and design skills, model roles, and a plain-English output rule. Choose it if you want those decisions made for you rather than assembling your own agent setup.
 
-## Built on Superpowers
+## Credits
 
-Most of the skills are adapted from [Superpowers](https://github.com/obra/superpowers) by Jesse Vincent, under the MIT license. `LICENSE` keeps his copyright.
+Most of the skills are adapted from the work of Jesse Vincent, under the MIT license. `LICENSE` keeps his copyright.
 
 Superb's own additions are listed under [What you get](#what-you-get).
 
