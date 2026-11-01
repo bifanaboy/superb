@@ -49,7 +49,6 @@ What goes wrong + fixes
 Concrete results
 ```
 
-
 ## Skill Discovery Optimization (SDO)
 
 **Critical for discovery:** Future agents need to FIND your skill

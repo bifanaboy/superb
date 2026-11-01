@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Test: a failed model is skipped for the rest of the session
+# Test: a failed subagent dispatch does not inject MODEL SKIP
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -8,6 +8,6 @@ echo "=== Test: Dead Model Tracking ==="
 
 node "$SCRIPT_DIR/test-dead-models.mjs" "$SCRIPT_DIR/../../src/superb.js"
 
-echo "  [PASS] failed models are skipped for the session"
+echo "  [PASS] no MODEL SKIP is injected"
 echo ""
 echo "=== All dead model tests passed ==="

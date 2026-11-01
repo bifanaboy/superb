@@ -9,7 +9,7 @@ that the fix itself broke nothing.
 
 ```
 Subagent (general-purpose):
-  description: "Smart agent — Re-review Task N fix round R"
+  description: "Re-review Task N fix round R"
   model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
          model silently inherits the session's most expensive one]
   prompt: |
@@ -101,8 +101,6 @@ Subagent (general-purpose):
 ```
 
 **Placeholders:**
-- `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection; every
-  review uses the smart role and starts at `costly`
 - `[BRIEF_FILE]` — the task brief file (same file the implementer worked from)
 - `[FINDINGS]` — the Critical/Important findings and spec gaps from the
   previous review, copied verbatim, one per bullet

@@ -164,23 +164,6 @@ const TODO_BLOCK_AFTER = 8;
 const TODO_BLOCK_ACTIONS = new Set(['edit', 'write', 'patch', 'shell']);
 const _todoState = new Map(); // sessionID -> { seen, callsSince, items }
 
-// A model that throws in a subagent dispatch is dead for the rest of the
-// session. The root agent cannot reliably remember that across compaction,
-// so the context hook repeats the list on every model call.
-const DEAD_MODELS_MAX = 512;
-const MODEL_ERROR_PATTERNS = [
-  /subscription_sharing_usage_limit_exceeded/i,
-  /usage limit/i,
-  /rate limit/i,
-  /quota/i,
-  /model not found/i,
-  /no such model/i,
-  /invalid model/i,
-  /unsupported model/i,
-  /overloaded/i,
-];
-const _deadModels = new Map(); // sessionID -> Set<modelID>
-
 const _todoStateFor = (sessionID) => {
   const cached = _todoState.get(sessionID);
   if (cached) return cached;
@@ -195,27 +178,6 @@ const _todoStateFor = (sessionID) => {
   _todoState.set(sessionID, state);
   return state;
 };
-
-const _deadModelsFor = (sessionID) => {
-  let set = _deadModels.get(sessionID);
-  if (set) return set;
-  if (_deadModels.size >= DEAD_MODELS_MAX) {
-    let toDrop = Math.ceil(DEAD_MODELS_MAX / 4);
-    for (const key of _deadModels.keys()) {
-      if (toDrop-- <= 0) break;
-      _deadModels.delete(key);
-    }
-  }
-  set = new Set();
-  _deadModels.set(sessionID, set);
-  return set;
-};
-
-const _isModelError = (message) =>
-  MODEL_ERROR_PATTERNS.some((pattern) => pattern.test(message));
-
-const _deadModelText = (models) =>
-  `MODEL SKIP: ${[...models].join(', ')}. Do not dispatch these models again in this session.`;
 
 const _todoProgress = (state) => {
   const active = state.items.find((item) => item && item.status === 'in_progress');
@@ -332,21 +294,6 @@ async function setup(ctx) {
     await ctx.tool.hook('execute.after', (event) => {
       try {
         if (!event || !event.sessionID) return;
-        try {
-          if (event.tool === 'subagent' && event.status === 'error') {
-            const model = event.input && typeof event.input.model === 'string'
-              ? event.input.model
-              : null;
-            const message = event.error && typeof event.error.message === 'string'
-              ? event.error.message
-              : String(event.error ?? '');
-            if (model && _isModelError(message)) {
-              _deadModelsFor(event.sessionID).add(model);
-            }
-          }
-        } catch (err) {
-          console.error('[superb] dead-model tracking failed:', err);
-        }
         const state = _todoStateFor(event.sessionID);
         if (event.tool === 'todowrite') {
           if (event.status !== 'completed') return;
@@ -404,15 +351,6 @@ async function setup(ctx) {
         const state = event.sessionID ? _todoState.get(event.sessionID) : undefined;
         if (!isChild && state && state.seen && state.callsSince >= nudgeAfter) {
           const text = _todoNudge(state);
-          if (Array.isArray(event.system) &&
-              !event.system.some((part) => part.type === 'text' && part.text === text)) {
-            event.system.push({ type: 'text', text });
-          }
-        }
-
-        const dead = event.sessionID ? _deadModels.get(event.sessionID) : undefined;
-        if (!isChild && dead && dead.size > 0) {
-          const text = _deadModelText(dead);
           if (Array.isArray(event.system) &&
               !event.system.some((part) => part.type === 'text' && part.text === text)) {
             event.system.push({ type: 'text', text });

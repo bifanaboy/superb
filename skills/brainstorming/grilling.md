@@ -22,7 +22,7 @@ Every question carries a recommendation. Word the question so "yes" accepts the 
 
 ## Finding facts
 
-Finding facts is your job, not the human's. Read files, run commands, or dispatch an `explore` subagent. Use the fast role for fact lookup. Never ask the human for something the project or the tools can answer. A running lookup blocks only the questions that depend on it; ask the rest of the frontier now.
+Finding facts is your job, not the human's. Read files, run commands, or dispatch an `explore` subagent. Never ask the human for something the project or the tools can answer. A running lookup blocks only the questions that depend on it; ask the rest of the frontier now.
 
 ## Scope
 

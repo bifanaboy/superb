@@ -136,37 +136,6 @@ Before dispatching Task 1, read [references/preflight.md](references/preflight.m
 and run the conflict scan it describes. Its table and rulings go in the
 ledger.
 
-## Model Selection
-
-Use the least powerful model that can handle each role to conserve cost and increase speed.
-
-**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use the **fast** role. Most implementation tasks are mechanical when the plan is well-specified.
-
-**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use the **smart** role.
-
-**Architecture and design tasks**: use the **smart** role.
-The final whole-branch review is one of these — dispatch it on the smart chain.
-
-**Review tasks**: every review uses the **smart** role. Start that role at
-`costly` like every other dispatch, and let the chain fall back.
-
-**Fix-loop escalation (rounds 4-5)**: use the smart chain. There is no role above smart.
-
-**Model roles:** Read `~/.config/opencode/superb/models.json` once per session. Pick a role: **fast** for transcription, or 1-2 files with a clear spec; **smart** for everything else, including every review, architecture, and debugging. For that role, try `costly`, then `cheap`, then `free` — always in that order, three attempts at most. Skip an empty or absent slot, or a model absent from `tools.opencode.models({ all: true })`. If no usable slot remains, or all three attempts fail, stop and ask your human partner. If the config is missing or broken, dispatch with your own model ID, passed explicitly. Always pass a model ID; an omitted model inherits your session's model. Record `Model: <id> (role: fast|smart, slot: costly|cheap|free)` in the ledger, and one ruling line per fallback. Report config problems once per session, in one summary block at the end of the task that found them, and name `@choosing-superb-models`. Fix-loop rounds 4-5 use the smart chain; there is no role above smart. Never dispatch a model listed in a MODEL SKIP line. The plugin records a model that fails a subagent dispatch and shows the line on every later call in that session. Treat a listed model as a dead slot for the rest of the session. This rule is for you, the root agent: workers never dispatch subagents.
-
-**Turn count beats token price.** Wall-clock and context cost scale with how
-many turns a subagent takes, and the cheapest models routinely take 2-3× the
-turns on multi-step work — costing more overall. Use a mid-tier model as the
-floor for reviewers and for implementers working from prose descriptions.
-When the task's plan text contains the complete code to write, the
-implementation is transcription plus testing: use the **fast** role for
-that implementer. Single-file mechanical fixes also take the **fast** role.
-
-**Task complexity signals (implementation tasks):**
-- Touches 1-2 files with a complete spec → **fast** role
-- Touches multiple files with integration concerns → **smart** role
-- Requires design judgment or broad codebase understanding → **smart** role
-
 ## The Task Loop
 
 **Small same-shape work:** when the plan lists several small edits of the
@@ -328,3 +297,5 @@ covers the whole-branch review, its single fix wave, and how you finish.
 | "Reviews slow the loop down" | The loop without reviews is just unverified churn. Reviews are the loop's brakes and steering. |
 | "Ledger bookkeeping is overhead" | The ledger is what survives compaction. Controllers without one have re-dispatched entire completed task sequences. |
 | "The implementer spawned its own reviewer — free extra assurance" | It's a duplicate seat reviewing the same diff; the task review is the gate. A worker-spawned reviewer is a defect to flag, not rigor. |
+
+Do not choose or pass a model. Dispatch every subagent without `model`.
