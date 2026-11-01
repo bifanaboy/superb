@@ -178,13 +178,6 @@ const MODEL_ERROR_PATTERNS = [
   /invalid model/i,
   /unsupported model/i,
   /overloaded/i,
-  /capacity/i,
-  /authentication/i,
-  /api key/i,
-  /unauthorized/i,
-  /forbidden/i,
-  /context length/i,
-  /too many tokens/i,
 ];
 const _deadModels = new Map(); // sessionID -> Set<modelID>
 

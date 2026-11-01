@@ -18,11 +18,11 @@
 # legacy workspace adopts instead of detecting; acceptable, marker-less
 # workspaces age out as plans finish.
 #
-# The workspace lives in the working tree (not under .git/) because Claude Code
-# treats .git/ as a protected path and denies agent writes there — which blocks
-# an implementer subagent from writing its report file. A self-ignoring
-# .gitignore at .superb/sdd/ keeps every plan's workspace out of
-# `git status` and out of accidental commits without modifying any tracked file.
+# The workspace lives in the working tree (not under .git/) because a host can
+# protect .git/ and deny agent writes there — which blocks an implementer
+# subagent from writing its report file. A self-ignoring .gitignore at
+# .superb/sdd/ keeps every plan's workspace out of `git status` and out of
+# accidental commits without modifying any tracked file.
 #
 # Single source of truth for the workspace location, so task-brief and
 # review-package cannot drift to different directories.

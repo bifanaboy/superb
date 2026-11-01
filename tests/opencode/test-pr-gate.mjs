@@ -27,6 +27,9 @@ const finish = read(FINISH);
 check('finishing skill exists', finish !== null);
 if (finish) {
   const prose = flat(finish);
+  check('setup table says four options', prose.includes('Standard 4 options'));
+  check('Step 6 cleans up after Option 2',
+    prose.includes('Runs for Option 1, Option 2, and confirmed discards'));
   check('menu offers Ship it first',
     finish.includes('1. Ship it: commit, push, create PR, merge, and clean up'));
   check('menu has no default marker', !finish.includes('(default)'));

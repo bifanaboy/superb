@@ -23,8 +23,7 @@ registers all skills.
 
 Verify by asking: "Tell me about Superb"
 
-OpenCode uses its own plugin install. If you also use Claude Code, Codex, or
-another harness, install Superb separately for each one.
+OpenCode uses its own plugin install. Superb targets OpenCode 2 only.
 
 ## Browser setup for the UI skills
 

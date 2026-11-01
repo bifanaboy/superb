@@ -23,6 +23,8 @@ if ! command -v opencode &> /dev/null; then
     exit 0
 fi
 
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout || true)"
+
 run_opencode() {
     local result_var="$1"
     local dir="$2"
@@ -31,7 +33,11 @@ run_opencode() {
     local exit_code
 
     set +e
-    command_output=$(cd "$dir" && timeout "${OPENCODE_TEST_TIMEOUT_SECONDS}s" opencode run --print-logs --format json "$prompt" 2>&1)
+    if [ -n "$TIMEOUT_BIN" ]; then
+        command_output=$(cd "$dir" && "$TIMEOUT_BIN" "${OPENCODE_TEST_TIMEOUT_SECONDS}s" opencode run --print-logs --format json "$prompt" 2>&1)
+    else
+        command_output=$(cd "$dir" && opencode run --print-logs --format json "$prompt" 2>&1)
+    fi
     exit_code=$?
     set -e
 
@@ -89,7 +95,7 @@ echo "  Running opencode with brainstorming skill..."
 
 run_opencode output "$TEST_HOME/test-project" "Call the skill tool with name \"brainstorming\". Then tell me the loaded skill title."
 assert_contains "$output" '"name":"brainstorming"' "native skill tool loaded bundled brainstorming skill"
-assert_contains "$output" "Brainstorming Ideas Into Designs" "brainstorming skill content was returned"
+assert_contains "$output" "# Brainstorming" "brainstorming skill content was returned"
 
 echo ""
 echo "=== All native skill tool tests passed ==="

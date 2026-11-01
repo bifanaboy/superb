@@ -60,7 +60,15 @@ while [[ $# -gt 0 ]]; do
             echo "  test-dispatch-write-surface.sh  Verify the parallel-dispatch write-surface contract"
             echo "  test-ui-skills.sh       Verify the UI skills, references and fixtures"
             echo "  test-rename-complete.sh Verify the old plugin name is gone"
-            echo "  test-tools.sh           Test use_skill and find_skills tools (integration)"
+            echo "  test-brainstorm-helper.sh  Verify the companion WebSocket URL scheme"
+            echo "  test-brainstorm-server.sh  Verify companion auth and WebSocket handling"
+            echo "  test-find-polluter.sh   Verify the pre-existing pollution guard"
+            echo "  test-task-brief.sh      Verify task briefs stop at the next section"
+            echo "  test-sdd-scripts.sh     Verify the SDD workspace, ledger, and review scripts"
+            echo "  test-no-orphan-hooks.sh Verify the orphaned hook files are gone"
+            echo "  test-opencode-only.sh   Verify shipped files name only OpenCode"
+            echo "  test-brainstorm-start.sh Verify the dead start-server block is gone"
+            echo "  test-tools.sh           Test the native skill tool (integration)"
             echo "  test-priority.sh        Test skill priority resolution (integration)"
             exit 0
             ;;
@@ -91,6 +99,14 @@ tests=(
     "test-dispatch-write-surface.sh"
     "test-ui-skills.sh"
     "test-rename-complete.sh"
+    "test-brainstorm-helper.sh"
+    "test-brainstorm-server.sh"
+    "test-find-polluter.sh"
+    "test-task-brief.sh"
+    "test-sdd-scripts.sh"
+    "test-no-orphan-hooks.sh"
+    "test-opencode-only.sh"
+    "test-brainstorm-start.sh"
 )
 
 # Integration tests (require OpenCode)

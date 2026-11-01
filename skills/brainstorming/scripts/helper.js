@@ -7,8 +7,15 @@
   function nextReconnectDelay(current, max) {
     return Math.min(current * 2, max);
   }
+
+  // Pure: pick the WebSocket scheme from the page scheme. Exported for unit tests.
+  function websocketUrl(location, key) {
+    const scheme = location.protocol === 'https:' ? 'wss://' : 'ws://';
+    return scheme + location.host + (key ? '/?key=' + encodeURIComponent(key) : '');
+  }
+
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { nextReconnectDelay, MIN_RECONNECT_MS, MAX_RECONNECT_MS, TOMBSTONE_AFTER_MS };
+    module.exports = { nextReconnectDelay, websocketUrl, MIN_RECONNECT_MS, MAX_RECONNECT_MS, TOMBSTONE_AFTER_MS };
   }
 
   // Everything below is browser-only; bail out when loaded in Node (tests).
@@ -29,9 +36,8 @@
     return null;
   }
 
-  function websocketUrl() {
-    const key = sessionKey();
-    return 'ws://' + window.location.host + (key ? '/?key=' + encodeURIComponent(key) : '');
+  function currentWebSocketUrl() {
+    return websocketUrl(window.location, sessionKey());
   }
 
   function reloadAfterRecovery() {
@@ -77,7 +83,7 @@
   function connect() {
     if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
     setStatus(everConnected ? 'reconnecting' : 'connecting');
-    ws = new WebSocket(websocketUrl());
+    ws = new WebSocket(currentWebSocketUrl());
 
     ws.onopen = () => {
       const recovered = tombstoneShown;

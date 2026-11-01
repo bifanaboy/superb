@@ -129,4 +129,18 @@ async function makeHarness({ parentID } = {}) {
   await assert.doesNotReject(() => h.context('s1', false), 'missing system array is safe');
 }
 
+// 12. A task failure that mentions a provider word does not kill the model.
+{
+  const h = await makeHarness();
+  await h.fail('model-a', 'tests failed: 401 Unauthorized');
+  assert.deepEqual(await h.context(), [], 'a task failure is not a model failure');
+}
+
+// 13. A real rate-limit message still records the model.
+{
+  const h = await makeHarness();
+  await h.fail('model-b', 'rate limit exceeded');
+  assert.equal((await h.context()).length, 1, 'a provider rate limit still records the model');
+}
+
 console.log('Dead model tracking passed');

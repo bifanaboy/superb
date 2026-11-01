@@ -21,8 +21,7 @@ than editing their words.>
 | Field | Value | Provenance / supporting evidence |
 |-------|-------|-------------------------------|
 | Superb version | <version> (<sha or "not a checkout">) | <historical evidence / unverified snapshot / current observation / unknown>; <location> |
-| Harness (Claude Code, Cursor, etc.) | <harness> | <label>; <location> |
-| Harness version | <version> | <label>; <location> |
+| OpenCode version | <version> | <label>; <location> |
 | Your model + version | <model ids seen> | <label>; <location> |
 | All plugins installed | <list> | <label>; <location> |
 | OS + shell | <os version>, <shell> | <label>; <location> |

@@ -31,19 +31,18 @@ else
   TOTAL=$(printf '%s\n' "$TEST_FILES" | wc -l | tr -d ' ')
 fi
 
+if [ -e "$POLLUTION_CHECK" ]; then
+  echo "❌ Pollution already exists: $POLLUTION_CHECK"
+  echo "   Remove it, then run this script again."
+  exit 2
+fi
+
 echo "Found $TOTAL test files"
 echo ""
 
 COUNT=0
 for TEST_FILE in $TEST_FILES; do
   COUNT=$((COUNT + 1))
-
-  # Skip if pollution already exists
-  if [ -e "$POLLUTION_CHECK" ]; then
-    echo "⚠️  Pollution already exists before test $COUNT/$TOTAL"
-    echo "   Skipping: $TEST_FILE"
-    continue
-  fi
 
   echo "[$COUNT/$TOTAL] Testing: $TEST_FILE"
 
