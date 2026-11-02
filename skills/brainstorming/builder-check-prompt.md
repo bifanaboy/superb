@@ -20,5 +20,17 @@ Rank them by importance.
 Skip anything the document explicitly leaves to the builder, and anything
 you could reasonably decide yourself. Skip nitpicks about wording.
 
+Also critique the design's shape. Phrase each finding as a question whose
+answer changes the plan:
+
+- Reduce: duplicated machinery, features the goal does not need, non-goals the
+  design accidentally serves, speculative extensions.
+- Cohere: more than one owner for a concern, conflicting layers, inconsistent
+  naming.
+- Elegant: a fork where thin composition would do, an abstraction with one
+  implementation, config for fixed values.
+
+Skip a critique the design already handles.
+
 If nothing important is left, say "nothing important left".
 ```
