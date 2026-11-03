@@ -78,5 +78,14 @@ else
     exit 1
 fi
 
+echo "Test: package.json dependency and version..."
+node -e '
+const p = require(process.argv[1]);
+if (p.version !== "11.0.0") throw new Error("version " + p.version);
+if (!p.dependencies || p.dependencies["@caveman-ai/cli"] !== "4.0.1") throw new Error("dependency missing");
+if (!p.engines || p.engines.node !== ">=22.13") throw new Error("engines missing");
+console.log("  [PASS] package.json declares @caveman-ai/cli@4.0.1 and version 11.0.0");
+' "$(cd "$SCRIPT_DIR/../.." && pwd)/package.json"
+
 echo ""
 echo "=== All plugin loading tests passed ==="

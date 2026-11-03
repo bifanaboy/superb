@@ -21,6 +21,22 @@ path. Discovered plugin symlinks remain supported.
 Restart OpenCode. The plugin installs through OpenCode's plugin manager and
 registers all skills.
 
+## Replacing the Caveman plugin
+
+Superb now ships the Caveman voice mode, commands, and compression. After
+installing Superb:
+
+1. Remove `"./plugins/caveman"` from `opencode.json`.
+2. Keep the `caveman` binary on `PATH`. Compression rewrites commands to call
+   it.
+3. Run `caveman mcp install opencode` so compressed output stays recoverable.
+4. Run `superb-install-agents` in OpenCode to write the cavecrew agents and
+   `review`.
+5. Add a `model:` line to `~/.config/opencode/agents/review.md`.
+
+Superb skips its Caveman layer when the Caveman plugin is still loaded, so
+the two can coexist during migration.
+
 Verify by asking: "Tell me about Superb"
 
 OpenCode uses its own plugin install. Superb targets OpenCode 2 only.
