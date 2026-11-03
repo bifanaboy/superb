@@ -334,7 +334,7 @@ async function setup(ctx, deps = {}) {
     }
   }
 
-  if (typeof ctx?.command?.transform === 'function') {
+  if (!cavemanActive && typeof ctx?.command?.transform === 'function') {
     try {
       await ctx.command.transform((editor) => {
         const agentsDir = path.join(os.homedir(), '.config', 'opencode', 'agents');

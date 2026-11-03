@@ -28,8 +28,8 @@ mkdir -p "$SUPERB_DIR"
 cp -r "$REPO_ROOT/skills" "$SUPERB_DIR/"
 
 # Install plugin
-mkdir -p "$(dirname "$SUPERB_PLUGIN_FILE")"
-cp "$REPO_ROOT/src/superb.js" "$SUPERB_PLUGIN_FILE"
+mkdir -p "$SUPERB_DIR/src"
+cp -r "$REPO_ROOT/src/." "$SUPERB_DIR/src/"
 
 # Register plugin via symlink (what OpenCode actually reads)
 mkdir -p "$OPENCODE_CONFIG_DIR/plugins"
