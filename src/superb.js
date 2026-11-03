@@ -19,6 +19,7 @@ import { CAVEMAN_COMMANDS } from './caveman/commands.js';
 import { isCavemanPluginActive } from './caveman/guard.js';
 import { readMode, writeMode } from './caveman/mode.js';
 import { resolveCliBin, createClient } from './caveman/client.js';
+import { AGENT_FILES, installAgents, uninstallAgents } from './caveman/agents.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -330,6 +331,46 @@ async function setup(ctx, deps = {}) {
       });
     } catch (err) {
       console.error('[superb] caveman command registration failed:', err);
+    }
+  }
+
+  if (typeof ctx?.command?.transform === 'function') {
+    try {
+      await ctx.command.transform((editor) => {
+        const agentsDir = path.join(os.homedir(), '.config', 'opencode', 'agents');
+        editor.add({
+          name: 'superb-install-agents',
+          description: 'Install the cavecrew and review agents',
+          execute: async ({ sessionID, prompt, delivery }) => {
+            const result = installAgents(agentsDir, () => {
+              if (typeof ctx?.agent?.reload === 'function') ctx.agent.reload();
+            });
+            await ctx.session.prompt({
+              ...prompt,
+              sessionID,
+              text: `Installed agents: ${result.installed.join(', ') || 'none (already present)'}.`,
+              delivery,
+            });
+          },
+        });
+        editor.add({
+          name: 'superb-uninstall-agents',
+          description: 'Remove the cavecrew and review agents',
+          execute: async ({ sessionID, prompt, delivery }) => {
+            const result = uninstallAgents(agentsDir, () => {
+              if (typeof ctx?.agent?.reload === 'function') ctx.agent.reload();
+            });
+            await ctx.session.prompt({
+              ...prompt,
+              sessionID,
+              text: `Removed agents: ${result.removed.join(', ') || 'none (not present)'}.`,
+              delivery,
+            });
+          },
+        });
+      });
+    } catch (err) {
+      console.error('[superb] agent installer command registration failed:', err);
     }
   }
 
