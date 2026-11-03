@@ -14,6 +14,10 @@
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import os from 'os';
+import { CAVEMAN_COMMANDS } from './caveman/commands.js';
+import { isCavemanPluginActive } from './caveman/guard.js';
+import { readMode, writeMode } from './caveman/mode.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -281,6 +285,47 @@ async function setup(ctx) {
     // Never break plugin activation: one failing plugin takes down the whole
     // V2 generation (including provider/catalog plugins => no models in TUI).
     console.error('[superb] skill registration failed:', err);
+  }
+
+  const cavemanActive = await (async () => {
+    try {
+      if (typeof ctx?.plugin?.list !== 'function') return false;
+      const plugins = await ctx.plugin.list();
+      return isCavemanPluginActive(plugins);
+    } catch (err) {
+      return false;
+    }
+  })();
+
+  if (cavemanActive) {
+    console.log('[superb] Caveman detected; skipping caveman layer.');
+  }
+
+  if (!cavemanActive && typeof ctx?.command?.transform === 'function') {
+    try {
+      await ctx.command.transform((editor) => {
+        const configDir = path.join(os.homedir(), '.config', 'opencode');
+        for (const command of CAVEMAN_COMMANDS) {
+          editor.add({
+            name: command.name,
+            description: command.description,
+            execute: async ({ sessionID, prompt, delivery }) => {
+              if (command.mode) {
+                try { writeMode(configDir, command.mode); } catch (err) {}
+              }
+              await ctx.session.prompt({
+                ...prompt,
+                sessionID,
+                text: command.prompt,
+                delivery,
+              });
+            },
+          });
+        }
+      });
+    } catch (err) {
+      console.error('[superb] caveman command registration failed:', err);
+    }
   }
 
   const nudgeAfter = _positiveInt(ctx?.options?.todoNudgeAfter, TODO_NUDGE_AFTER);
