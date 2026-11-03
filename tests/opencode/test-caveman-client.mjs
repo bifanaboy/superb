@@ -6,10 +6,20 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const mod = await import(pathToFileURL(path.join(root, 'src/caveman/client.js')).href);
-const { resolveCliBin, createClient } = mod;
+const { resolveCliBin, createClient, resolveNodeBin } = mod;
 
 const bin = resolveCliBin();
 assert.ok(bin === null || /dist\/index\.js$/.test(bin), 'resolveCliBin returns null or a dist path');
+
+const savedNode = process.env.CAVEMAN_NODE;
+delete process.env.CAVEMAN_NODE;
+assert.equal(resolveNodeBin('/usr/local/bin/opencode'), 'node', 'non-node execPath resolves to node');
+assert.equal(resolveNodeBin('/usr/local/bin/node'), '/usr/local/bin/node', 'node execPath stays');
+assert.equal(resolveNodeBin('/usr/local/bin/bun'), '/usr/local/bin/bun', 'bun execPath stays');
+process.env.CAVEMAN_NODE = '/custom/node';
+assert.equal(resolveNodeBin('/usr/local/bin/opencode'), '/custom/node', 'CAVEMAN_NODE wins');
+if (savedNode === undefined) delete process.env.CAVEMAN_NODE;
+else process.env.CAVEMAN_NODE = savedNode;
 
 const calls = [];
 const client = createClient({
@@ -43,5 +53,11 @@ assert.equal(throwing.sessionStart('s1'), undefined, 'throwing exec yields undef
 const recorded = calls.find((c) => c.args[0] === 'native-hook' && c.args[2] === 'SessionStart');
 assert.deepEqual(recorded.args, ['native-hook', 'opencode', 'SessionStart'], 'args recorded');
 assert.equal(recorded.input.event_name, 'SessionStart', 'payload recorded');
+
+if (bin) {
+  const live = createClient({ bin });
+  const liveVersion = live.getVersion();
+  assert.equal(typeof liveVersion, 'string', 'getVersion spawns the CLI under Node');
+}
 
 console.log('  [PASS] caveman client');

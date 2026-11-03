@@ -15,8 +15,28 @@ export function resolveCliBin() {
   }
 }
 
+// OpenCode runs plugins inside its own binary, so process.execPath is not
+// Node there. Spawn the host's Node explicitly and fall back when it is absent.
+export function resolveNodeBin(execPath = process.execPath) {
+  const forced = process.env.CAVEMAN_NODE;
+  if (typeof forced === 'string' && forced.trim() !== '') return forced.trim();
+  const base = path.basename(execPath || '').toLowerCase();
+  if (base.startsWith('node') || base === 'bun') return execPath;
+  return 'node';
+}
+
+function runNode(args, options) {
+  const nodeBin = resolveNodeBin();
+  try {
+    return execFileSync(nodeBin, args, options);
+  } catch (err) {
+    if (nodeBin === process.execPath || !err || err.code !== 'ENOENT') throw err;
+    return execFileSync(process.execPath, args, options);
+  }
+}
+
 function defaultExec(bin, args, payload) {
-  return execFileSync(process.execPath, [bin, ...args], {
+  return runNode([bin, ...args], {
     input: JSON.stringify(payload),
     encoding: 'utf8',
     timeout: 2000,
@@ -87,7 +107,7 @@ export function createClient({ bin, exec } = {}) {
     },
     getVersion() {
       try {
-        const raw = execFileSync(process.execPath, [bin, '--version'], {
+        const raw = runNode([bin, '--version'], {
           encoding: 'utf8',
           timeout: 2000,
           maxBuffer: 1024 * 1024,
