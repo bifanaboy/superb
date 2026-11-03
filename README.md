@@ -58,9 +58,12 @@ The agent asks what you want, offers approaches, and writes a design. You approv
 4. **Review.** A fresh reviewer checks the whole branch.
 5. **Finish.** The finish menu asks before it pushes, opens a pull request, or merges.
 
-## Models
+## Reviewer model
 
-Superb does not choose models. Subagents inherit the host model, or the model set by an installed routing plugin.
+Superb ships a `review` agent with three lenses: spec, plan, and implementation.
+Install it with `superb-install-agents`, then add a `model:` line to your copy
+in `~/.config/opencode/agents/review.md`. The review skills dispatch it; it
+does not inherit the build session's model.
 
 ## Learn more
 

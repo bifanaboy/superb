@@ -105,6 +105,13 @@ tests=(
     "test-no-orphan-hooks.sh"
     "test-opencode-only.sh"
     "test-brainstorm-start.sh"
+    "test-reviewer-agent.sh"
+    "test-review-dispatch.sh"
+    "test-caveman-mode.sh"
+    "test-caveman-client.sh"
+    "test-caveman-registration.sh"
+    "test-caveman-hooks.sh"
+    "test-caveman-installer.sh"
 )
 
 # Integration tests (require OpenCode)

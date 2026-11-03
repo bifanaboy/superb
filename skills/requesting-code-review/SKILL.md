@@ -29,15 +29,24 @@ BASE_SHA=$(git rev-parse HEAD~1)  # or: git merge-base origin/main HEAD
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**2. Dispatch code reviewer subagent:**
+**2. Dispatch the review subagent:**
 
-Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md](code-reviewer.md)
+Dispatch the `review` agent, filling the template at [code-reviewer.md](code-reviewer.md). Name the lens in the dispatch.
+
+**Lenses:**
+- `Lens: spec` — a design spec before it becomes a plan.
+- `Lens: plan` — an implementation plan before any code.
+- `Lens: implementation` — a code change before it merges.
 
 **Placeholders:**
+- `{LENS}` - `spec`, `plan`, or `implementation`
 - `{DESCRIPTION}` - Brief summary of what you built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
+
+When the `review` agent is not installed, dispatch `general` with the same
+template.
 
 **3. Act on feedback:**
 - Fix Critical issues immediately
@@ -94,4 +103,4 @@ You: [Fix progress indicators]
 
 See template at: [code-reviewer.md](code-reviewer.md)
 
-Do not choose or pass a model. Dispatch every subagent without `model`.
+Do not pass a model. Dispatch without `model`; the `review` agent carries its own.

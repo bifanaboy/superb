@@ -14,6 +14,12 @@
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import os from 'os';
+import { CAVEMAN_COMMANDS } from './caveman/commands.js';
+import { isCavemanPluginActive } from './caveman/guard.js';
+import { readMode, writeMode } from './caveman/mode.js';
+import { resolveCliBin, createClient } from './caveman/client.js';
+import { AGENT_FILES, installAgents, uninstallAgents } from './caveman/agents.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -73,6 +79,7 @@ export const TOOL_MAPPING = `**Tool Mapping for OpenCode:**
 When skills request actions, substitute OpenCode equivalents:
 - Create or update todos → \`todowrite\` (when \`experimental.todo\` is enabled; otherwise track the plan in the ledger)
 - \`Subagent (general-purpose):\` → \`subagent\` with \`agent: "general"\` (give it \`description\` and \`prompt\`, optionally \`background\`; pass \`sessionID\` to continue a previous subagent)
+- \`Subagent (review):\` → \`subagent\` with \`agent: "review"\` (lens: spec, plan, or implementation)
 - Invoke a skill → OpenCode's native \`skill\` tool
 - Read files → \`read\`
 - Create, edit, or delete files → use \`patch\` with \`patchText\` when available; otherwise use \`write\` to create or overwrite files, \`edit\` for targeted changes, and \`shell\` for deletion
@@ -239,7 +246,7 @@ const isChildSession = async (fetchSession, sessionID) => {
  *    See packages/core/src/plugin/skill.ts and packages/schema/src/skill.ts.
  * 2. Injects bootstrap context via ctx.session.hook("context").
  */
-async function setup(ctx) {
+async function setup(ctx, deps = {}) {
   // 1. Register skills (one transform; one draft.add per skill)
   try {
     const skills = [];
@@ -283,11 +290,135 @@ async function setup(ctx) {
     console.error('[superb] skill registration failed:', err);
   }
 
+  const cavemanActive = await (async () => {
+    try {
+      if (typeof ctx?.plugin?.list !== 'function') return false;
+      const plugins = await ctx.plugin.list();
+      return isCavemanPluginActive(plugins);
+    } catch (err) {
+      return false;
+    }
+  })();
+
+  const cavemanClient = (deps && Object.prototype.hasOwnProperty.call(deps, 'cavemanClient'))
+    ? deps.cavemanClient
+    : (cavemanActive ? null : (resolveCliBin() ? createClient({ bin: resolveCliBin() }) : null));
+
+  if (cavemanActive) {
+    console.log('[superb] Caveman detected; skipping caveman layer.');
+  }
+
+  if (!cavemanActive && typeof ctx?.command?.transform === 'function') {
+    try {
+      await ctx.command.transform((editor) => {
+        const configDir = path.join(os.homedir(), '.config', 'opencode');
+        for (const command of CAVEMAN_COMMANDS) {
+          editor.add({
+            name: command.name,
+            description: command.description,
+            execute: async ({ sessionID, prompt, delivery }) => {
+              if (command.mode) {
+                try { writeMode(configDir, command.mode); } catch (err) {}
+              }
+              await ctx.session.prompt({
+                ...prompt,
+                sessionID,
+                text: command.prompt,
+                delivery,
+              });
+            },
+          });
+        }
+      });
+    } catch (err) {
+      console.error('[superb] caveman command registration failed:', err);
+    }
+  }
+
+  if (!cavemanActive && typeof ctx?.command?.transform === 'function') {
+    try {
+      await ctx.command.transform((editor) => {
+        const agentsDir = path.join(os.homedir(), '.config', 'opencode', 'agents');
+        editor.add({
+          name: 'superb-install-agents',
+          description: 'Install the cavecrew and review agents',
+          execute: async ({ sessionID, prompt, delivery }) => {
+            const result = installAgents(agentsDir, () => {
+              if (typeof ctx?.agent?.reload === 'function') ctx.agent.reload();
+            });
+            await ctx.session.prompt({
+              ...prompt,
+              sessionID,
+              text: `Installed agents: ${result.installed.join(', ') || 'none (already present)'}.`,
+              delivery,
+            });
+          },
+        });
+        editor.add({
+          name: 'superb-uninstall-agents',
+          description: 'Remove the cavecrew and review agents',
+          execute: async ({ sessionID, prompt, delivery }) => {
+            const result = uninstallAgents(agentsDir, () => {
+              if (typeof ctx?.agent?.reload === 'function') ctx.agent.reload();
+            });
+            await ctx.session.prompt({
+              ...prompt,
+              sessionID,
+              text: `Removed agents: ${result.removed.join(', ') || 'none (not present)'}.`,
+              delivery,
+            });
+          },
+        });
+      });
+    } catch (err) {
+      console.error('[superb] agent installer command registration failed:', err);
+    }
+  }
+
   const nudgeAfter = _positiveInt(ctx?.options?.todoNudgeAfter, TODO_NUDGE_AFTER);
   const blockAfter = Math.max(
     _positiveInt(ctx?.options?.todoBlockAfter, TODO_BLOCK_AFTER),
     nudgeAfter,
   );
+
+  // 1b. Caveman shrink and compression hooks.
+  if (!cavemanActive && cavemanClient && typeof ctx?.tool?.hook === 'function') {
+    try {
+      await ctx.tool.hook('execute.before', async (event) => {
+        try {
+          if (!event || (event.tool !== 'shell' && event.tool !== 'bash')) return;
+          const input = event.input;
+          if (!input || typeof input !== 'object' || typeof input.command !== 'string') return;
+          const out = cavemanClient.shrink(input.command);
+          if (typeof out === 'string') input.command = out;
+        } catch (err) {
+          console.error('[superb] caveman shrink hook failed:', err);
+        }
+      });
+    } catch (err) {
+      console.error('[superb] caveman shrink hook registration failed:', err);
+    }
+    try {
+      await ctx.tool.hook('execute.after', async (event) => {
+        try {
+          if (!event || event.status !== 'completed') return;
+          const input = event.input;
+          const toolOutput = event.result && typeof event.result === 'object'
+            ? (event.result.content ?? event.result.output)
+            : event.result;
+          const out = cavemanClient.postTool(event.sessionID, event.tool, input, toolOutput);
+          if (typeof out === 'string') {
+            if (event.result && typeof event.result === 'object') event.result.content = out;
+            else event.result = { content: out };
+          }
+        } catch (err) {
+          console.error('[superb] caveman compression hook failed:', err);
+        }
+      });
+    } catch (err) {
+      console.error('[superb] caveman compression hook registration failed:', err);
+    }
+  }
 
   // 2. Track tool calls so the nudge and the gate can see a stale todo list
   try {
@@ -331,6 +462,28 @@ async function setup(ctx) {
     });
   } catch (err) {
     console.error('[superb] todo gate hook registration failed:', err);
+  }
+
+  // 3b. Caveman voice reinforcement, before the bootstrap hook.
+  if (!cavemanActive && cavemanClient && typeof ctx?.session?.hook === 'function') {
+    try {
+      const configDir = (ctx?.options && ctx.options.cavemanConfigDir) || path.join(os.homedir(), '.config', 'opencode');
+      await ctx.session.hook('context', async (event) => {
+        try {
+          if (!event) return;
+          const mode = readMode(configDir);
+          if (!mode || mode === 'off') return;
+          const text = `CAVEMAN MODE ACTIVE (${mode}) — session ruleset applies.`;
+          if (Array.isArray(event.system) && !event.system.some((part) => part && part.type === 'text' && part.text === text)) {
+            event.system.push({ type: 'text', text });
+          }
+        } catch (err) {
+          console.error('[superb] caveman voice hook failed:', err);
+        }
+      });
+    } catch (err) {
+      console.error('[superb] caveman voice hook registration failed:', err);
+    }
   }
 
   // 4. Inject the bootstrap into the first user message, and the todo nudge
