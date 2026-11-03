@@ -146,6 +146,11 @@ try {
   const fixturePlugin = path.join(fixtureRoot, 'src', 'superb.js');
   fs.mkdirSync(path.dirname(fixturePlugin), { recursive: true });
   fs.copyFileSync(pluginPath, fixturePlugin);
+  const cavemanSrc = path.resolve(path.dirname(pluginPath), 'caveman');
+  const fixtureCaveman = path.join(fixtureRoot, 'src', 'caveman');
+  if (fs.existsSync(cavemanSrc)) {
+    fs.cpSync(cavemanSrc, fixtureCaveman, { recursive: true });
+  }
   for (const [id, { frontmatter }] of Object.entries(frontmatterFixtures)) {
     const skillDir = path.join(fixtureRoot, 'skills', id);
     fs.mkdirSync(skillDir, { recursive: true });
