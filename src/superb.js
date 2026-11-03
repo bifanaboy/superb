@@ -403,13 +403,30 @@ async function setup(ctx, deps = {}) {
         try {
           if (!event || event.status !== 'completed') return;
           const input = event.input;
-          const toolOutput = event.result && typeof event.result === 'object'
-            ? (event.result.content ?? event.result.output)
-            : event.result;
+          const result = event.result;
+          // V2 tool results carry model-facing content as parts. Read the text
+          // parts, not the array, so the CLI sees the payload the model sees.
+          let toolOutput;
+          if (typeof result === 'string') {
+            toolOutput = result;
+          } else if (result && Array.isArray(result.content)) {
+            toolOutput = result.content
+              .filter((part) => part && part.type === 'text' && typeof part.text === 'string')
+              .map((part) => part.text)
+              .join('\n');
+          } else if (result && typeof result.content === 'string') {
+            toolOutput = result.content;
+          } else if (result && typeof result.output === 'string') {
+            toolOutput = result.output;
+          }
+          if (typeof toolOutput !== 'string' || toolOutput === '') return;
           const out = cavemanClient.postTool(event.sessionID, event.tool, input, toolOutput);
-          if (typeof out === 'string') {
-            if (event.result && typeof event.result === 'object') event.result.content = out;
-            else event.result = { content: out };
+          if (typeof out !== 'string') return;
+          if (result && typeof result === 'object') {
+            if (Array.isArray(result.content)) result.content = [{ type: 'text', text: out }];
+            else result.content = out;
+          } else {
+            event.result = { content: out };
           }
         } catch (err) {
           console.error('[superb] caveman compression hook failed:', err);

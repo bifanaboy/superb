@@ -34,9 +34,13 @@ const makeCtx = (configDir) => {
   return { ctx, contextHooks, beforeHooks, afterHooks };
 };
 
+const postToolCalls = [];
 const client = {
   shrink: (cmd) => (cmd === 'grep foo .' ? 'shrunk cmd' : undefined),
-  postTool: () => 'compressed out',
+  postTool: (sessionID, tool, input, output) => {
+    postToolCalls.push(output);
+    return 'compressed out';
+  },
   sessionStart: () => undefined,
   preTool: () => undefined,
   getVersion: () => '4.0.1',
@@ -66,6 +70,25 @@ const client = {
   const afterEvent = { tool: 'bash', status: 'completed', sessionID: 's1', input: {}, result: { content: 'big' } };
   await afterHooks[0](afterEvent);
   assert.equal(afterEvent.result.content, 'compressed out', 'compression replaces content');
+  assert.deepEqual(postToolCalls.at(-1), 'big', 'string result passes through');
+
+  const v2Event = {
+    tool: 'shell',
+    status: 'completed',
+    sessionID: 's1',
+    input: { command: 'seq 1 2000' },
+    result: {
+      content: [
+        { type: 'text', text: 'line a' },
+        { type: 'text', text: 'line b' },
+      ],
+      metadata: { exit: 0 },
+    },
+  };
+  await afterHooks[0](v2Event);
+  assert.deepEqual(postToolCalls.at(-1), 'line a\nline b', 'v2 content parts join into text');
+  assert.deepEqual(v2Event.result.content, [{ type: 'text', text: 'compressed out' }], 'v2 content replaced with one part');
+  assert.deepEqual(v2Event.result.metadata, { exit: 0 }, 'v2 metadata untouched');
 }
 
 {
